@@ -10,6 +10,34 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String     @id @default(cuid())
+  name      String?
+  email     String     @unique
+  password  String
+  image     String?
+  bookmarks Bookmark[]  // each user has many bookmarks
+  isAdmin   Boolean    @default(false)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model Bookmark {
+  id           Int      @id @default(autoincrement())
+  title        String
+  url          String
+  icon         String?
+  tags         String
+  timesVisited Int      @default(0)
+  createdAt    DateTime @default(now())
+  lastVisited  DateTime @default(now())
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  @@unique([userId, url]) // 👈 ensures no duplicate URL per user
 }
