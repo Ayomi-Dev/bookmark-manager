@@ -1,0 +1,19 @@
+export const Tags = [
+    "Frameworks",
+    "AI",
+    "Compatibility",
+    "Community",
+    "CSS",
+    "Design",
+    "Git",
+    "HTML",
+    "JavaScript",
+    "Layout",
+    "Learnig",
+    "Performance",
+    "Practice",
+    "Reference",
+    "Tips",
+    "Tools",
+    "Tutorials"
+]

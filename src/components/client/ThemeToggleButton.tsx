@@ -1,4 +1,3 @@
-// components/ThemeToggleButton.tsx
 "use client";
 
 import { IconButton, useColorMode } from "@chakra-ui/react";

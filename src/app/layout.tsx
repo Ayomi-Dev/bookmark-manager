@@ -4,6 +4,8 @@ import Providers from "@/components/ui/provider";
 import SideBar from "@/components/SideBar";
 import TopBar from "@/components/TopBar";
 import { Box } from "@chakra-ui/react";
+import AddBookmarkModal from "@/components/client/AddBookmarkModal";
+import { BookmarkProvider } from "@/context/BookmarkContext";
 
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
@@ -28,16 +30,21 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
-        <Providers>
-          <SideBar />
-          <Box
-            flex={1}
-          >
-            <TopBar />
-            {children}
+        <BookmarkProvider>
 
-          </Box>
-        </Providers>
+          <Providers>
+            <TopBar />
+            <Box
+              display={"flex"}
+            >
+              <SideBar />
+              {children}
+
+            </Box>
+            <AddBookmarkModal />
+          </Providers>
+          
+        </BookmarkProvider>
       </body>
     </html>
   );

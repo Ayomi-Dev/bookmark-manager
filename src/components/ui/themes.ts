@@ -1,4 +1,3 @@
-// theme.ts
 import { extendTheme, ThemeConfig } from "@chakra-ui/react";
 
 const config: ThemeConfig = {
@@ -14,9 +13,9 @@ const theme = extendTheme({
       bgLight: "#e8f1f0",
       textLight: "#323232",
       accentLight: "#e9d4ff",
-      // dark theme colors
+     
       
-      bgDark: "linear-gradient(180deg, #0f2027 0%, #203a43 50%, #2c5364 100%)",
+      bgDark: "linear-gradient(to top, #0f2027 0%, #203a43 50%, #2c5364 100%)",
       textDark: "#e0e0e0",
       accentDark: "#bb86fc",
     },
@@ -37,11 +36,44 @@ const theme = extendTheme({
           props.colorMode === "dark"
             ? "brand.textDark"
             : "brand.textLight",
-        // transition: "background 5s ease-in-out, color 0.6s ease-in-out",
-        // minHeight: "100vh"
+        
       },
     }),
   },
+  components: {
+  Button: {
+    variants: {
+      brand: (props: any) => ({
+        bg: props.colorMode === "dark" ? "black" : "#00c6ff",
+        color: "white",
+        _hover: { opacity: 0.9 },
+        transition: "background 0.4s ease",
+        borderRadius: "md"
+      }),
+    },
+    defaultProps: {
+      variant: "brand", // all buttons use this by default
+    },
+  },
+  Input: {
+    variants: {
+      borderless: {
+        outline: {
+          field: {
+            _focus: {
+              border: "none",
+              boxShadow: "none"
+            },
+          },
+        },
+      }
+    },
+  },
+  defaultProps: {
+    variant: "borderless", // all inputs use this
+  },
+},
+
 });
 
 export default theme;
