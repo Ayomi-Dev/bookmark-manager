@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from "@/generated/prisma";
 import bcrypt from "bcrypt"
-import jwt from "jsonwebtoken"
 import { signToken } from "@/lib/jwt";
 
 const prisma = new PrismaClient();
@@ -31,23 +30,13 @@ export const POST = async (req: NextRequest ) => {
 
         const user = await prisma.user.create({
             data: {
+              name,
               email,
               password: hashedPassword,
               bookmarks: 
                 {
                     create: [
-                      {
-                        title: "Prisma Docs",
-                        url: "https://www.prisma.io/docs",
-                        icon: "https://prisma.io/icon.png",
-                        tags: JSON.stringify(["react", "framework"]),
-                      },
-                      {
-                        title: "Next.js",
-                        url: "https://nextjs.org",
-                        icon: "https://nextjs.org/favicon.ico",
-                        tags: JSON.stringify(["react", "framework"])
-                      }
+                      
                     ]
                 }
             },

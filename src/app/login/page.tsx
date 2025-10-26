@@ -1,16 +1,28 @@
 "use client"
 import { InputComponent } from '@/components/client/InputComponent'
+import NotificationModal from '@/components/NotificationModal'
 import { Box, Button, Flex, HStack, useColorModeValue } from '@chakra-ui/react'
 import { Lock, Message2, MessageNotif, MessageSquare, PasswordCheck } from 'iconsax-reactjs'
+import { useRouter } from 'next/navigation'
 import React, { ChangeEvent, FormEvent, useState } from 'react'
 
 const LoginPage = () => {
-    // const borderColor = useColorModeValue("blue.200", "blue.400");
-  
+  const router = useRouter();  
   const [userInfo, setUserInfo] = useState({
     email: "",
     password: ""
   })
+
+  const [notification, setNotification] = useState({ // Set notification state 
+    show: false,
+    type: "info" as "success" | "error" | "info",
+    message: "",
+  });
+
+   const closeNotification = () => { // closes notification modal
+     setNotification((prev) => ({ ...prev, show: false }));
+   }
+
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setUserInfo({...userInfo, [e.target.name]: e.target.value})
     
@@ -31,11 +43,25 @@ const LoginPage = () => {
       if(!res.ok){
         throw new Error("Something went wrong!")
       }
-      const data = res.json()
-      console.log(data)
+      const data = await res.json()
+      console.log(data?.user, "User logged in")
+      setNotification({
+        show: true,
+        type: "success",
+        message:`Welcome back ${data?.user.name}!...`,
+      });
+
+      setTimeout(() => {
+        router.push('/user/profile')
+      }, 5000)
     } 
     catch (error) {
-      console.log(error)
+      console.log(error);
+      setNotification({
+        show: true,
+        type: "error",
+        message: "Something went wrong. Please try again.",
+      });
     }
   }
 
@@ -76,6 +102,13 @@ const LoginPage = () => {
 
         </Flex>
       </form> 
+
+      <NotificationModal
+        show={notification.show}
+        type={notification.type}
+        message={notification.message}
+        onClose={closeNotification}
+      />
     </Box>
   )
 }

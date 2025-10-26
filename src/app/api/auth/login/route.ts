@@ -10,7 +10,6 @@ export const POST = async(req: NextRequest) => {
     try {
         const body = await req.json()
         const { email, password } = body;
-        console.log(email, password)
 
         if(!email || !password) {
             return NextResponse.json(
@@ -22,6 +21,7 @@ export const POST = async(req: NextRequest) => {
         const userExist = await prisma.user.findUnique({
             where: { email }
         })
+        
 
         if(!userExist) {
             return NextResponse.json(
@@ -62,7 +62,6 @@ export const POST = async(req: NextRequest) => {
             path: '/',
             maxAge: 60 * 60
         });
-        console.log(response)
         return response;
     } 
     catch (error) {
