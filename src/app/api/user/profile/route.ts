@@ -5,7 +5,6 @@ const prisma = new PrismaClient()
 
 
 export const GET = async (  req: NextRequest) => {
-    console.log("profile hit")
 
     try {
         const userId = req.headers.get("userID");

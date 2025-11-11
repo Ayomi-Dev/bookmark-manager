@@ -39,7 +39,6 @@ export const UserContextProvider = ( { children } : { children : ReactNode}) => 
                 throw new Error("Session expired!")
             }
             else{
-                console.log(data.user)
                 setUser(data.user)
             }
 
@@ -48,9 +47,11 @@ export const UserContextProvider = ( { children } : { children : ReactNode}) => 
         }
     }
 
-    
+    useEffect(() => {
+        getUser()
+    }, [])
 
-
+ 
 
     const login = (newUser: User) => {
         setUser( newUser )

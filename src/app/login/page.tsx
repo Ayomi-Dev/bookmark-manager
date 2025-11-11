@@ -52,15 +52,12 @@ const LoginPage = () => {
         throw new Error("Something went wrong!")
       }
       else{
-        const data = await res.json()
-        // console.log(data?.user, "User logged in")
         await getUser()
-        console.log(data.user)
         setTimeout(() => {
           setNotification({
           show: true,
           type: "success",
-          message:`Welcome back ${data?.user.name}!...`,
+          message:`Welcome back! Redirecting to your profile...`,
           loading: false
         });
         }, 2000)

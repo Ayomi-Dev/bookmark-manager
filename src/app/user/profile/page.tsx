@@ -5,12 +5,14 @@ import { useUserContext } from '@/context/UserContext';
 
 const ProfilePage = () => {
      const { user } = useUserContext()  
+     console.log( user?.bookmarks)
       
   return (
     <PageWrapper>
 
       <Box>
         { user?.name}
+        { user?.bookmarks}
       </Box>
     </PageWrapper>
   )

@@ -8,7 +8,7 @@ interface UserPayload {
 }
 
 // Routes that require authentication
-const protectedRoutes = ["/api/user/profile", "/api/auth/user/bookmarks", "/dashboard"];
+const protectedRoutes = ["/api/user/profile", "/api/user/bookmarks", "/dashboard"];
 
 export async function middleware(req: NextRequest) {
     const { pathname } = req.nextUrl;

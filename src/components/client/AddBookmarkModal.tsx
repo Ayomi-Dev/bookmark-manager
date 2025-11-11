@@ -2,7 +2,7 @@
 
 import { Box, Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalOverlay, Tag, TagCloseButton, TagLabel, Text, useDisclosure, Wrap, WrapItem } from "@chakra-ui/react"
 import { InputComponent } from "./InputComponent"
-import { FormEvent } from "react"
+import { ChangeEvent, FormEvent, useState } from "react"
 import { useBookmarkContext } from "@/context/BookmarkContext"
 import Select from "react-select"
 import { Tags } from "@/types"
@@ -19,9 +19,38 @@ const AddBookmarkModal = () => {
         }
     ))
     const { isOpen, onClose, tags, setTags, removeTags } = useBookmarkContext()
+    const [bookmarkInfo, setBoomarkInfo] = useState({
+      title: "",
+      description: "",
+      url: "",
+      tags: JSON.stringify( tags ),
+      icon: ""
+    })
 
-    const handleAddBookmark = (e: FormEvent) => {
-        e.preventDefault()
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+      setBoomarkInfo({...bookmarkInfo, [e.target.name]: e.target.value})
+    }
+
+    const handleAddBookmark = async(e: FormEvent) => {
+        e.preventDefault();
+        try {
+          const res = await fetch("http://localhost:3000/api/user/bookmarks", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify( bookmarkInfo )
+          } )
+          const data = await res.json();
+          if(!res.ok){
+            throw new Error("Cannot create bookmark")
+          }
+          console.log(data.newBookmark)
+        }
+        catch (error) {
+          console.log(error)
+        }
+
     }
   return (
      <Modal isOpen={isOpen} onClose={onClose}>
@@ -30,9 +59,9 @@ const AddBookmarkModal = () => {
         <form onSubmit={handleAddBookmark}>
           <ModalCloseButton bg="#F6F6FA" borderRadius="50%" />
           <ModalBody py={5}>
-            <InputComponent name="title" type="text" label="Title" />
-            <InputComponent name="description" type="text" label="Description" />
-            <InputComponent name="url" type="text" label="Web URL" />
+            <InputComponent name="title" type="text" label="Title" onChange={handleChange} />
+            <InputComponent name="description" type="text" label="Description" onChange={handleChange} />
+            <InputComponent name="url" type="text" label="Web URL" onChange={handleChange} />
 
             {/* Multi-select input */}
             <Box mt={4}>
