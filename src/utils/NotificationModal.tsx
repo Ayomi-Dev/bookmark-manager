@@ -19,6 +19,7 @@ type NotificationModalProps = {
   message: string;
   onClose: () => void;
   autoCloseDelay?: number; // optional auto-close duration
+  loading: boolean
 };
 
 const iconConfig = {
@@ -28,11 +29,11 @@ const iconConfig = {
   },
   error: {
     icon: CloseCircle,
-    color: "red.400",
+    color: "red",
   },
   info: {
     icon: InfoCircle,
-    color: "blue.400",
+    color: "blue",
   },
 };
 
@@ -42,6 +43,7 @@ const NotificationModal: React.FC<NotificationModalProps> = ({
   message,
   onClose,
   autoCloseDelay = 5000,
+  loading,
 }) => {
   const { icon: Icon, color } = iconConfig[type];
   const bg = useColorModeValue("white", "gray.800");
@@ -81,8 +83,9 @@ const NotificationModal: React.FC<NotificationModalProps> = ({
             onClick={onClose}
             px={6}
             borderRadius="lg"
+            isLoading={loading}
           >
-            OK
+            {loading ? `${message}` : "OK"}
           </Button>
         </ModalFooter>
       </ModalContent>

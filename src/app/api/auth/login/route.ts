@@ -7,6 +7,7 @@ const prisma = new PrismaClient()
 
 
 export const POST = async(req: NextRequest) => {
+    console.log("login hit")
     try {
         const body = await req.json()
         const { email, password } = body;
@@ -18,19 +19,20 @@ export const POST = async(req: NextRequest) => {
             )
         }
 
-        const userExist = await prisma.user.findUnique({
-            where: { email }
+        const existingUser = await prisma.user.findUnique({
+            where: { email },
+            include: { bookmarks: true}
         })
         
-
-        if(!userExist) {
+        if(!existingUser) {
+            console.log("password or email issue")
             return NextResponse.json(
                 { message: "User does not exist!"},
                 { status: 400 }
             )
         }
 
-        const validPassword = await bcrypt.compare(password, userExist.password);
+        const validPassword = await bcrypt.compare(password, existingUser.password);
         if(!validPassword){
             return NextResponse.json(
                 { message: "Password incorrect!"},
@@ -45,17 +47,22 @@ export const POST = async(req: NextRequest) => {
             )
         }
 
-        const payload = { id: userExist.id, name: userExist.name } 
+        const payload = { id: existingUser.id, isAdmin: existingUser.isAdmin } 
         const token = signToken( payload );
+        console.log(token, "in login")
 
         const response = NextResponse.json( 
             { 
                 success: true,
-                user: payload
+                user:{
+                    id: existingUser.id,
+                    email: existingUser.email,
+                },
+                
             }
         )
 
-        response.cookies.set( "token", token, {
+        response.cookies.set("token", token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             sameSite: "strict",

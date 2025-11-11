@@ -2,6 +2,7 @@ import { Box, Divider, Flex, Heading, IconButton, Text, VStack } from '@chakra-u
 import React from 'react'
 import TagOption from './client/TagOption'
 import { Bookmark } from 'iconsax-reactjs'
+import Link from 'next/link'
 
 const SideBar = () => {
   return (
@@ -24,7 +25,9 @@ const SideBar = () => {
            p={2}
            borderRadius="md"
          >
+          <Link href={'/'}>
            Home
+          </Link>
          </Text>
          <Text
            fontWeight="medium"

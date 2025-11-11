@@ -2,9 +2,10 @@ import { Box, Flex, HStack, IconButton, Text } from '@chakra-ui/react';
 import React from 'react';
 import { SearchBar } from './client/SearchBar';
 import { AddBookmarkButon } from './client/AddBookmarkButon';
-import { UserIcon } from './client/UserIcon';
+import { UserMenu } from './client/UserMenu';
 import ThemeToggleButton from './client/ThemeToggleButton';
 import { Bookmark } from 'iconsax-reactjs';
+import LoginButton from './client/LoginButton';
 
 const TopBar = () => {
   return (
@@ -47,8 +48,9 @@ const TopBar = () => {
         px={2}
       >
         <AddBookmarkButon />
-        <UserIcon />
+        <UserMenu />
         <ThemeToggleButton />
+        <LoginButton />
       </Box>
     </Flex>
   )

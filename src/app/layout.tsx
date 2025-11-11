@@ -6,6 +6,7 @@ import TopBar from "@/components/TopBar";
 import { Box } from "@chakra-ui/react";
 import AddBookmarkModal from "@/components/client/AddBookmarkModal";
 import { BookmarkProvider } from "@/context/BookmarkContext";
+import { UserContextProvider } from "@/context/UserContext";
 
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
@@ -30,21 +31,23 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
-        <BookmarkProvider>
+        <UserContextProvider>
+          <BookmarkProvider>
 
-          <Providers>
-            <TopBar />
-            <Box
-              display={"flex"}
-            >
-              <SideBar />
-              {children}
+            <Providers>
+              <TopBar />
+              <Box
+                display={"flex"}
+              >
+                <SideBar />
+                {children}
 
-            </Box>
-            <AddBookmarkModal />
-          </Providers>
-          
-        </BookmarkProvider>
+              </Box>
+              <AddBookmarkModal />
+            </Providers>
+            
+          </BookmarkProvider>
+        </UserContextProvider>
       </body>
     </html>
   );

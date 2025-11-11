@@ -33,12 +33,6 @@ export const POST = async (req: NextRequest ) => {
               name,
               email,
               password: hashedPassword,
-              bookmarks: 
-                {
-                    create: [
-                      
-                    ]
-                }
             },
             include: { bookmarks: true }
         });
@@ -51,11 +45,19 @@ export const POST = async (req: NextRequest ) => {
             )
         }
 
-        const payload = { id: user.id, email: user.email, name: user.name }
+        const payload = { id: user.id, email: user.email }
         const token = signToken( payload )
 
         return NextResponse.json(
-            { message: `Welcome ${user.name}`, token},
+            { 
+                message: `Welcome ${user.name}`, 
+                user: {
+                    id: user.id,
+                    name: user.name,
+                    email: user.email
+                },
+                token
+            },
             { status: 201 }
         )
     } 

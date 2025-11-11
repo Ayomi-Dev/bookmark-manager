@@ -1,7 +1,7 @@
 "use client";
 import { useBookmarkContext } from "@/context/BookmarkContext";
 import { Tags } from "@/types";
-import { Box, Checkbox, Divider, Flex, Heading, Input, Select, Text, VStack } from "@chakra-ui/react";
+import { Box, Checkbox, Flex, Heading, Text, VStack } from "@chakra-ui/react";
 const TagOption = () => {
   const { addTags, tags, removeTags } = useBookmarkContext();
 
@@ -13,10 +13,8 @@ const TagOption = () => {
     else{
       removeTags(tag)
     }
-    console.log(`Added tag ${tag} to ${tags}`)
 
   }
-  console.log(tags)
   return (
     <Box
       w="full"

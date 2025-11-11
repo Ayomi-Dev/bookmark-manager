@@ -1,13 +1,16 @@
 "use client"
 import { InputComponent } from '@/components/client/InputComponent'
-import NotificationModal from '@/components/NotificationModal'
-import { Box, Button, Flex, HStack, useColorModeValue } from '@chakra-ui/react'
-import { Lock, Message2, MessageNotif, MessageSquare, PasswordCheck } from 'iconsax-reactjs'
+import { useUserContext } from '@/context/UserContext'
+import NotificationModal from '@/utils/NotificationModal'
+import { PageWrapper } from '@/utils/PageWrapper'
+import { Box, Button, Flex, HStack } from '@chakra-ui/react'
+import { Lock,  MessageNotif } from 'iconsax-reactjs'
 import { useRouter } from 'next/navigation'
 import React, { ChangeEvent, FormEvent, useState } from 'react'
 
 const LoginPage = () => {
   const router = useRouter();  
+  const { login, getUser } = useUserContext()
   const [userInfo, setUserInfo] = useState({
     email: "",
     password: ""
@@ -17,6 +20,7 @@ const LoginPage = () => {
     show: false,
     type: "info" as "success" | "error" | "info",
     message: "",
+    loading: false
   });
 
    const closeNotification = () => { // closes notification modal
@@ -25,11 +29,15 @@ const LoginPage = () => {
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setUserInfo({...userInfo, [e.target.name]: e.target.value})
-    
-    console.log(userInfo)
   }
   const loginUser = async (e: FormEvent) => {
     e.preventDefault();
+    setNotification({
+        show: true,
+        type: "info",
+        message:`Please wait!...`,
+        loading: true
+      });
 
     try {
       const res = await fetch("http://localhost:3000/api/auth/login", {
@@ -43,14 +51,21 @@ const LoginPage = () => {
       if(!res.ok){
         throw new Error("Something went wrong!")
       }
-      const data = await res.json()
-      console.log(data?.user, "User logged in")
-      setNotification({
-        show: true,
-        type: "success",
-        message:`Welcome back ${data?.user.name}!...`,
-      });
-
+      else{
+        const data = await res.json()
+        // console.log(data?.user, "User logged in")
+        await getUser()
+        console.log(data.user)
+        setTimeout(() => {
+          setNotification({
+          show: true,
+          type: "success",
+          message:`Welcome back ${data?.user.name}!...`,
+          loading: false
+        });
+        }, 2000)
+      }
+      
       setTimeout(() => {
         router.push('/user/profile')
       }, 5000)
@@ -61,55 +76,60 @@ const LoginPage = () => {
         show: true,
         type: "error",
         message: "Something went wrong. Please try again.",
+        loading: false
       });
     }
   }
 
   return (
-    <Box
-      width={"500px"}
-      mx={"auto"}
-      bg={"brand.secBg"}
-      h={"500px"}
-      borderRadius={"10px"}
-      px={5}
-      pt={3}
-      mt={3}
-    >
-      <form onSubmit={loginUser} > 
-        <HStack
-        >
-          <MessageNotif size={15} variant='Linear' />
-          <InputComponent type="email" name='email' label='Email' onChange={handleInputChange} />
-        </HStack>
-
-        <HStack>
-          <Lock variant='Linear' size={15} />
-          <InputComponent type="password" name='password' label='Password' onChange={handleInputChange} />
-        </HStack>
-
-        <Flex
-          justifyContent={"center"}
-          w={"200px"}
-          mx={"auto"}
-        >
-          <Button 
-            type='submit'
-            size={"sm"}
+    <PageWrapper>
+      <Box
+        width={"500px"}
+        mx={"auto"}
+        bg={"brand.secBg"}
+        h={"500px"}
+        borderRadius={"10px"}
+        px={5}
+        pt={3}
+        mt={3}
+      >
+        <form onSubmit={loginUser} > 
+          <HStack
           >
-            Login
-          </Button>
+            <MessageNotif size={15} variant='Linear' />
+            <InputComponent type="email" name='email' label='Email' onChange={handleInputChange} />
+          </HStack>
 
-        </Flex>
-      </form> 
+          <HStack>
+            <Lock variant='Linear' size={15} />
+            <InputComponent type="password" name='password' label='Password' onChange={handleInputChange} />
+          </HStack>
 
-      <NotificationModal
-        show={notification.show}
-        type={notification.type}
-        message={notification.message}
-        onClose={closeNotification}
-      />
-    </Box>
+          <Flex
+            justifyContent={"center"}
+            w={"200px"}
+            mx={"auto"}
+          >
+            <Button 
+              type='submit'
+              size={"sm"}
+            >
+              Login
+            </Button>
+
+          </Flex>
+        </form> 
+
+        <NotificationModal
+          show={notification.show}
+          type={notification.type}
+          message={notification.message}
+          onClose={closeNotification}
+          loading={notification.loading}
+        />
+      </Box>
+
+    </PageWrapper>
   )
 }
 
