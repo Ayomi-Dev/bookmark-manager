@@ -1,12 +1,13 @@
 "use client"
 
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
+import { Bookmark } from "./BookmarkContext";
 
 interface User {
     id: string;
     name: string;
     email: string;
-    bookmarks: string[]
+    bookmarks: Bookmark[]
 }
 
 interface UserContextType {

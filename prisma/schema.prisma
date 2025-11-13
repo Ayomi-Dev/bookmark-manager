@@ -28,10 +28,10 @@ model User {
 
 model Bookmark {
   id           Int      @id @default(autoincrement())
-  title        String
-  url          String
+  title        String?
+  url          String    @unique
   icon         String?
-  tags         String
+  tags         String?
   description  String?
   timesVisited Int      @default(0)
   createdAt    DateTime @default(now())

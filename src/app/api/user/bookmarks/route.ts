@@ -4,40 +4,41 @@ import { PrismaClient } from "@/generated/prisma";
 const prisma = new PrismaClient();
 
 export const POST = async(req: NextRequest) => {
-    console.log("route hit")
     try {
         const userID = req.headers.get("userID"); //gets the id of the user making the request
-        if(!userID){
+        const body = await req.json();
+        const { url ,tags} = body;
+        if(!userID || !url){
             return NextResponse.json(
                 { error: "Unauthorized request"},
                 { status: 401 }
             )
         }
 
-        const body = await req.json();
-        const { url, title, description, tags, icon, } = body;
-                console.log(tags, userID, title, description, icon, url)
+        console.log
 
         const newBookmark = await prisma.bookmark.create(
             {
                 data: {
                     url,
-                    title,
-                    icon,
-                    description,
                     tags,
                     userId: userID
                 }
             }
         )
-        
+        fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/user/bookmarks/metadata`, { //fetches metadata of the url recieved in the background
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ bookmarkId: newBookmark.id, url }),
+        }).catch((err) => console.error("Background fetch failed:", err));
+        console.log(newBookmark)
+
         return NextResponse.json(
-            { message: "Bookmark created", newBookmark },
+            { message: "Bookmark created", bookmark: newBookmark },
             { status: 201 }
         )
     } 
     catch (error: any) {// Handles unique constraint violation
-        console.error("Error details:", error);
         if (error.code === "P2002") {
           return NextResponse.json(
             { error: "You already saved this bookmark" },

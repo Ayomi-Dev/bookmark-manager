@@ -3,6 +3,18 @@
 import { useDisclosure } from "@chakra-ui/react";
 import { createContext, ReactNode, useContext, useState } from "react";
 
+export type Bookmark = {
+    id: number;
+    title: string;
+    tags: [];
+    icon: string;
+    url: string;
+    description: string;
+    timesVisited: number;
+    lastVisited: Date;
+    createdAt: Date
+}
+
 interface BookmarkType {
     isOpen: boolean;
     onOpen: () => void;
