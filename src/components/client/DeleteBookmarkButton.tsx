@@ -31,13 +31,13 @@ export const DeleteBookmarkButton: FC<DeleteBookmarkButtonProp> = ({ id }) => {
         }
     }
   return (
-    <Button
-        size={"sm"}
-        bg={"none"}
-        onClick={() => handleDelete(id)}
-    >
-        <Trash size={10} variant='Bold' color='red' />
-    </Button>
+    
+        <Trash
+         size={15}
+         variant='Bold' 
+          color='red'   
+          onClick={() => handleDelete(id)}
+        />
   )
 }
 

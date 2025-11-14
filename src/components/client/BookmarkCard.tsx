@@ -2,10 +2,10 @@
 import { Bookmark } from '@/context/BookmarkContext';
 import { Box, Divider, Flex, GridItem, Heading, HStack, IconButton, Text, VStack } from '@chakra-ui/react';
 import { Calendar, Eye, Timer1 } from 'iconsax-reactjs';
-import { MoreVertical } from './MoreVerticalIcon';
 import { Pushpin } from './Pushpin';
 import { DeleteBookmarkButton } from './DeleteBookmarkButton';
 import Image from 'next/image';
+import { BookmarkMenu } from './BookmarMenu';
 
 interface BookmarkProp {
     bookmark: Bookmark
@@ -28,22 +28,32 @@ const BookmarkCard = ( { bookmark }: BookmarkProp) => {
                 w={"full"}
                 h={"60px"}
                 py={2}
-            >
-               <HStack>
-                    <Image src={bookmark.icon} alt='url-img'  width={40} height={40} />
+                >
+               <HStack
+                color={"brand.textLight"}
+               >
+                    <Image 
+                    src={bookmark.icon} 
+                    alt='url-img'  
+                    width={30} 
+                    height={30} 
+                    objectFit='cover'
+                    style={{  borderRadius: '50%' }}
+                    />
                     <Box>
-                        <Heading fontSize={"2xl"}>{bookmark.title}</Heading>
+                        <Heading fontSize={"xl"}>{bookmark.title}</Heading>
                         <Text fontSize={"10px"}>{bookmark.url}</Text>
                     </Box>
                 </HStack> 
-                <MoreVertical boxSize={5} color="gray.600" cursor="pointer" />
+                <BookmarkMenu id={ bookmark.id }/>
             </Flex>
             <Divider />
             <Box
                 h={"150px"}
                 py={2}
+                color={"brand.textLight"}
             >
-                <Text fontSize={"md"}>{bookmark.description}</Text>
+                <Text fontSize={"sm"}>{bookmark.description}</Text>
                 <Flex gap={2}>
                     {bookmark.tags.map(tag => {
                         return (
@@ -53,8 +63,9 @@ const BookmarkCard = ( { bookmark }: BookmarkProp) => {
                             bg={"brand.bgLight"}
                             px={2} py={1}
                             fontSize={"8px"}
-                          >{tag}
-                            </Text>
+                          >
+                            {tag}
+                        </Text>
                         )
                     })}
                 </Flex>
@@ -79,7 +90,6 @@ const BookmarkCard = ( { bookmark }: BookmarkProp) => {
                         <Calendar size={10} variant='Linear' />
                         <Text fontSize={"xs"}>{bookmark.timesVisited}</Text>
                     </HStack>
-                    <DeleteBookmarkButton id={bookmark.id} />
                 </Flex>
                 <Pushpin boxSize={6} color="blue.500" cursor="pointer" />
                 
