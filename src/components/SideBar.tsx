@@ -15,6 +15,8 @@ const SideBar = () => {
       borderRight="1px"
       borderColor="gray.200"
       p={4}
+      position={"sticky"}
+      top={0}
     >
       
       <VStack align="stretch" spacing={3}>

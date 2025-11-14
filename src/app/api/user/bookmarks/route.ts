@@ -7,34 +7,38 @@ export const POST = async(req: NextRequest) => {
     try {
         const userID = req.headers.get("userID"); //gets the id of the user making the request
         const body = await req.json();
-        const { url ,tags} = body;
-        if(!userID || !url){
+        const { url,tags, title, description, icon} = body;
+        if(!userID){
             return NextResponse.json(
-                { error: "Unauthorized request"},
+                { error: "Unauthorized request: No user found"},
                 { status: 401 }
             )
         }
 
-        console.log
+        if(!url){
+            return NextResponse.json(
+                { error: "Valid url required!"},
+                { status: 400 }
+            )
+        }
 
         const newBookmark = await prisma.bookmark.create(
             {
                 data: {
                     url,
                     tags,
+                    description,
+                    title,
+                    icon,
                     userId: userID
                 }
             }
         )
-        fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/user/bookmarks/metadata`, { //fetches metadata of the url recieved in the background
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ bookmarkId: newBookmark.id, url }),
-        }).catch((err) => console.error("Background fetch failed:", err));
+        
         console.log(newBookmark)
 
         return NextResponse.json(
-            { message: "Bookmark created", bookmark: newBookmark },
+            { message: "Bookmark created successfully!", newBookmark },
             { status: 201 }
         )
     } 

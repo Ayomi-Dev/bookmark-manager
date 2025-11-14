@@ -19,12 +19,19 @@
     "iconsax-reactjs": "^0.0.8",
     "jose": "^6.1.0",
     "jsonwebtoken": "^9.0.2",
+    "metascraper": "^5.49.5",
+    "metascraper-author": "^5.49.5",
+    "metascraper-description": "^5.49.5",
+    "metascraper-image": "^5.49.5",
+    "metascraper-logo": "^5.49.5",
+    "metascraper-publisher": "^5.49.5",
+    "metascraper-title": "^5.49.5",
+    "metascraper-url": "^5.49.5",
     "next": "15.5.5",
     "prisma": "^6.17.1",
     "react": "19.1.0",
     "react-dom": "19.1.0",
-    "react-select": "^5.10.2",
-    "url-metadata": "^5.2.3"
+    "react-select": "^5.10.2"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

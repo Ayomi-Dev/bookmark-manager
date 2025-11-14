@@ -1,6 +1,6 @@
 "use client"
 
-import { Box, Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalOverlay, Tag, TagCloseButton, TagLabel, Text, useDisclosure, Wrap, WrapItem } from "@chakra-ui/react"
+import { Box, Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalOverlay, Tag, TagCloseButton, TagLabel, Text, Wrap, WrapItem } from "@chakra-ui/react"
 import { InputComponent } from "./InputComponent"
 import { ChangeEvent, FormEvent, useState } from "react"
 import { useBookmarkContext } from "@/context/BookmarkContext"
@@ -19,33 +19,49 @@ const AddBookmarkModal = () => {
         }
     ))
     const { isOpen, onClose, tags, setTags, removeTags } = useBookmarkContext()
+    const [url, setUrl] = useState("")
     const [bookmarkInfo, setBoomarkInfo] = useState({
-      title: "",
-      description: "",
-      url: "",
-      tags: JSON.stringify( tags ),
-      icon: ""
+      
     })
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+      setUrl(e.target.value)
       setBoomarkInfo({...bookmarkInfo, [e.target.name]: e.target.value})
     }
 
     const handleAddBookmark = async(e: FormEvent) => {
         e.preventDefault();
+        console.log("req sent")
         try {
-          const res = await fetch("http://localhost:3000/api/user/bookmarks", {
+          const metadataRes = await fetch("/api/user/bookmarks/metadata", { //fsends the url to the backend api route
             method: "POST",
             headers: {
               "Content-Type": "application/json"
             },
-            body: JSON.stringify( bookmarkInfo )
-          } )
-          const data = await res.json();
-          if(!res.ok){
-            throw new Error("Cannot create bookmark")
+            body: JSON.stringify({ url })
+          })
+          const metadata = await metadataRes.json() //extracts the response so that its data  can be used in the next request
+          console.log(metadata)
+          if(!metadataRes){
+            throw new Error("Cannot fetch metadata at this point, please try again!");
           }
-          console.log(data.newBookmark)
+
+          const data = await fetch("/api/user/bookmarks", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify( {
+              url,
+              title: metadata.title,
+              description: metadata.description,
+              tags: JSON.stringify( tags ),
+              icon: !metadata.logo ? metadata.image : metadata.logo
+            } )
+          })
+          const info = await data.json()
+          console.log(info.newBookmark)
+
         }
         catch (error) {
           console.log(error)
@@ -59,9 +75,7 @@ const AddBookmarkModal = () => {
         <form onSubmit={handleAddBookmark}>
           <ModalCloseButton bg="#F6F6FA" borderRadius="50%" />
           <ModalBody py={5}>
-            <InputComponent name="title" type="text" label="Title" onChange={handleChange} />
-            <InputComponent name="description" type="text" label="Description" onChange={handleChange} />
-            <InputComponent name="url" type="text" label="Web URL" onChange={handleChange} />
+            <InputComponent name="url" type="text" label="Web URL" value={url} onChange={handleChange} />
 
             {/* Multi-select input */}
             <Box mt={4}>

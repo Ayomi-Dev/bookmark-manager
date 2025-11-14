@@ -38,6 +38,8 @@ export default function RootLayout({
               <TopBar />
               <Box
                 display={"flex"}
+                position={"relative"}
+                mt={"70px"}
               >
                 <SideBar />
                 {children}

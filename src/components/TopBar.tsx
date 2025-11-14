@@ -14,11 +14,12 @@ const TopBar = () => {
       w={"100%"}
        bg={"brand.secBg"}
       _dark={{bg: "brand.bgDark"}}
-      position={"sticky"}
+      position={"fixed"}
       top={0}
       alignItems={"center"}
       justifyContent={"space-between"}
       px={2}
+      zIndex={99}
     >
       <Flex
         alignItems={"center"}

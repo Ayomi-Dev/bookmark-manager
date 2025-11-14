@@ -1,9 +1,11 @@
 "use client";
 import { Bookmark } from '@/context/BookmarkContext';
 import { Box, Divider, Flex, GridItem, Heading, HStack, IconButton, Text, VStack } from '@chakra-ui/react';
-import { Calendar, Eye, Global, Location, LocationAdd, LocationCross, LocationMinus, LocationSlash, LocationTick, Timer1 } from 'iconsax-reactjs';
+import { Calendar, Eye, Timer1 } from 'iconsax-reactjs';
 import { MoreVertical } from './MoreVerticalIcon';
 import { Pushpin } from './Pushpin';
+import { DeleteBookmarkButton } from './DeleteBookmarkButton';
+import Image from 'next/image';
 
 interface BookmarkProp {
     bookmark: Bookmark
@@ -28,10 +30,7 @@ const BookmarkCard = ( { bookmark }: BookmarkProp) => {
                 py={2}
             >
                <HStack>
-                    <IconButton 
-                        aria-label='icon'
-                        icon={ <Global size={15} variant='Linear'/> }
-                    />
+                    <Image src={bookmark.icon} alt='url-img'  width={40} height={40} />
                     <Box>
                         <Heading fontSize={"2xl"}>{bookmark.title}</Heading>
                         <Text fontSize={"10px"}>{bookmark.url}</Text>
@@ -80,9 +79,10 @@ const BookmarkCard = ( { bookmark }: BookmarkProp) => {
                         <Calendar size={10} variant='Linear' />
                         <Text fontSize={"xs"}>{bookmark.timesVisited}</Text>
                     </HStack>
-                    
+                    <DeleteBookmarkButton id={bookmark.id} />
                 </Flex>
                 <Pushpin boxSize={6} color="blue.500" cursor="pointer" />
+                
             </Flex>
         </GridItem>
     )

@@ -8,7 +8,6 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
     <ChakraProvider theme={ theme }>
         <ColorModeScript initialColorMode={theme.config.initialColorMode} />
         <Box
-          overflow={"hidden"}
           h={"100vh"}
         >
           {children}
