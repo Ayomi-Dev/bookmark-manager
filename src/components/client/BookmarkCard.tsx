@@ -11,7 +11,7 @@ interface BookmarkProp {
 }
 
 const BookmarkCard = ( { bookmark }: BookmarkProp) => {
-    console.log(bookmark.tags.map(tag => (tag)))
+    
   return (
         <GridItem
             borderRadius={"xl"}
@@ -35,13 +35,23 @@ const BookmarkCard = ( { bookmark }: BookmarkProp) => {
                 h={"full"}
                 gap={3}
                >
-                    <Image 
-                    src={bookmark.icon} 
-                    alt='url-img'  
-                    width={30} 
-                    height={30} 
-                    style={{  borderRadius: '50%' }}
-                    />
+                    
+
+                <Box
+                  w="30px"
+                  h="30px"
+                  overflow="hidden"
+                  borderRadius="50%"
+                  position="relative"
+                >
+                  <Image
+                    src={bookmark.icon}
+                    alt="url-img"
+                    fill
+                    style={{ objectFit: "cover" }}
+                  />
+                </Box>
+
                     <Box>
                         <Heading fontSize={"xl"}>
                             {
@@ -64,7 +74,7 @@ const BookmarkCard = ( { bookmark }: BookmarkProp) => {
                 color={"brand.textLight"}
             >
                 <Text fontSize={"sm"}>{bookmark.description}</Text>
-                <Flex gap={2}>
+                <Flex gap={2} py={2}>
                     {bookmark.tags.map(tag => {
                         return (
                           <Text

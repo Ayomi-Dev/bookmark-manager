@@ -18,7 +18,7 @@ const AddBookmarkModal = () => {
             label: tag
         }
     ))
-    const { isOpen, onClose, tags, setTags, removeTags } = useBookmarkContext()
+    const { isOpen, onClose, tags, setTags, removeTags, addBookmark } = useBookmarkContext()
     const [url, setUrl] = useState("")
     const [bookmarkInfo, setBoomarkInfo] = useState({
       
@@ -60,7 +60,8 @@ const AddBookmarkModal = () => {
             } )
           })
           const info = await data.json()
-          console.log(info.newBookmark)
+          console.log(info.newBookmark.tags)
+          addBookmark(info.newBookmark)
 
         }
         catch (error) {

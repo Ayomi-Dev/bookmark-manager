@@ -1,17 +1,12 @@
 "use client"
-import { Box, Button, Grid } from '@chakra-ui/react';
+import { Grid } from '@chakra-ui/react';
 import { PageWrapper } from '@/utils/PageWrapper';
-import { useUserContext } from '@/context/UserContext';
 import BookmarkCard from '@/components/client/BookmarkCard';
+import { useBookmarkContext } from '@/context/BookmarkContext';
 
 const ProfilePage = () => {
-     const { user } = useUserContext()  
-     const bookmarks = user?.bookmarks.map(bookmark => {
-        return {
-          ...bookmark,
-          tags: typeof bookmark.tags === 'string' ? JSON.parse(bookmark.tags) : bookmark.tags
-        }
-      })      
+     const { bookmarks } = useBookmarkContext();
+        
   return (
     <PageWrapper>
 
