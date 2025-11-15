@@ -1,9 +1,8 @@
 "use client";
 import { Bookmark } from '@/context/BookmarkContext';
-import { Box, Divider, Flex, GridItem, Heading, HStack, IconButton, Text, VStack } from '@chakra-ui/react';
+import { Box, Divider, Flex, GridItem, Heading, HStack, Text } from '@chakra-ui/react';
 import { Calendar, Eye, Timer1 } from 'iconsax-reactjs';
 import { Pushpin } from './Pushpin';
-import { DeleteBookmarkButton } from './DeleteBookmarkButton';
 import Image from 'next/image';
 import { BookmarkMenu } from './BookmarMenu';
 
@@ -18,6 +17,7 @@ const BookmarkCard = ( { bookmark }: BookmarkProp) => {
             borderRadius={"xl"}
             bg={"brand.secBg"}
             px={3}
+            py={2}
             display={"flex"}
             flexDir={"column"}
             justifyContent={"space-between"}
@@ -31,25 +31,35 @@ const BookmarkCard = ( { bookmark }: BookmarkProp) => {
                 >
                <HStack
                 color={"brand.textLight"}
+                alignItems={"center"}
+                h={"full"}
+                gap={3}
                >
                     <Image 
                     src={bookmark.icon} 
                     alt='url-img'  
                     width={30} 
                     height={30} 
-                    objectFit='cover'
                     style={{  borderRadius: '50%' }}
                     />
                     <Box>
-                        <Heading fontSize={"xl"}>{bookmark.title}</Heading>
-                        <Text fontSize={"10px"}>{bookmark.url}</Text>
+                        <Heading fontSize={"xl"}>
+                            {
+                                bookmark.title?.length <= 25 
+                                ?
+                                bookmark.title
+                                :
+                                `${bookmark.title?.slice(0,26)}...`
+                            }
+                        </Heading>
+                        <Text fontSize={"10px"}>{bookmark.url?.slice(0,40)}...</Text>
                     </Box>
                 </HStack> 
                 <BookmarkMenu id={ bookmark.id }/>
             </Flex>
-            <Divider />
+            <Divider py={1} />
             <Box
-                h={"150px"}
+                h={"200px"}
                 py={2}
                 color={"brand.textLight"}
             >
@@ -79,7 +89,7 @@ const BookmarkCard = ( { bookmark }: BookmarkProp) => {
             >
                 <Flex gap={3}>
                     <HStack gap={1}>
-                        <Eye size={10} variant='Linear' />
+                        <Eye size={10} variant='Linear'  />
                         <Text fontSize={"xs"}>{bookmark.timesVisited}</Text>
                     </HStack>
                     <HStack gap={1}>

@@ -1,9 +1,9 @@
 "use client"
 
-import { IconButton, Menu, MenuButton, MenuItem, MenuList, Text } from "@chakra-ui/react"
-import { Edit, Logout, User, UserCirlceAdd } from "iconsax-reactjs"
-import { DeleteBookmarkButton } from "./DeleteBookmarkButton"
+import { Menu, MenuButton, MenuItem, MenuList, Text } from "@chakra-ui/react"
+import { Edit } from "iconsax-reactjs"
 import { MoreVertical } from "./MoreVerticalIcon"
+import DeleteBookmarkButton from "./DeleteBookmarkButton"
 
 
 export const BookmarkMenu = ({id}: {id: number}) => {
@@ -16,13 +16,10 @@ export const BookmarkMenu = ({id}: {id: number}) => {
       </MenuButton>
       <MenuList>
         <MenuItem display={"flex"} gap={2}>
-          <Edit variant="Linear" size={15} />
+            <Edit variant="Linear" size={15} />
             <Text fontSize={"xs"} > Edit </Text>
         </MenuItem>
-        <MenuItem display={"flex"} gap={2}>
-            <DeleteBookmarkButton id={id} />
-            <Text fontSize={"xs"}> Delete </Text>
-        </MenuItem>
+        <DeleteBookmarkButton id={id} />
       </MenuList>
     </Menu>
   )

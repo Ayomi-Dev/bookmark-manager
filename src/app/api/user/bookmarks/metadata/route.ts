@@ -18,9 +18,12 @@ const scraper = metascraper([
   metascraperPublisher(),
 ]);
 
+const MAX_ATTEMPTS = 3;  // Maximum retry attempts
+const RETRY_DELAY = 2000; // Delay between retries (in ms)
+
 export async function POST(req: Request) {
   try {
-    const { url } = await req.json(); //grabs the url sent by user
+    const { url } = await req.json();
 
     if (!url) {
       return NextResponse.json(
@@ -29,26 +32,49 @@ export async function POST(req: Request) {
       );
     }
 
-    const response = await fetch(url, {
-      headers: {
-        "User-Agent": "Mozilla/5.0 (compatible; MetadataBot/1.0; +http://localhost:3000)"  //fetches the webpage with a browser-like User-Agent so metadata can be can successfully read.
-      }
-    });
+    let attempt = 0;
+    let metadata = null;
 
-    if (!response.ok) {
+    // Retry mechanism
+    while (attempt < MAX_ATTEMPTS) {
+      try {
+        const response = await fetch(url, {
+          headers: {
+            "User-Agent": "Mozilla/5.0 (compatible; MetadataBot/1.0)"
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error(`Failed to fetch URL: ${response.status}`);
+        }
+
+        const html = await response.text();
+        metadata = await scraper({ html, url });
+        console.log(metadata)
+
+        // Break out if the loop is successful
+        break;
+      } catch (error: any) {
+        attempt++;
+        console.error(`Attempt ${attempt} failed: ${error.message}`);
+
+        // If max attempts or retries has not been reached yet, wait before retrying
+        if (attempt < MAX_ATTEMPTS) {
+          await new Promise(resolve => setTimeout(resolve, RETRY_DELAY));
+        }
+      }
+    }
+
+    // If metadata is still null after retries, return an error
+    if (!metadata) {
       return NextResponse.json(
-        { error: `Failed to fetch URL: ${response.status}` },
-        { status: response.status }
+        { error: "Failed to fetch metadata after multiple attempts" },
+        { status: 500 }
       );
     }
 
-    const html = await response.text();
-    const metadata = await scraper({ html, url }); //extracts the html content of the url
-    console.log(metadata)
-
     return NextResponse.json(metadata);
-  } 
-  catch (error: any) {
+  } catch (error) {
     console.error(error);
     return NextResponse.json(
       { error: "Metadata extraction failed" },
@@ -56,4 +82,3 @@ export async function POST(req: Request) {
     );
   }
 }
-;

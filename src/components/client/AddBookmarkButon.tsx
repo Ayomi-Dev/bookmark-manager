@@ -6,7 +6,7 @@ import { useBookmarkContext } from '@/context/BookmarkContext'
 import { useUserContext } from '@/context/UserContext'
 
 export const AddBookmarkButon = () => {
-  const { onOpen, isOpen } =useBookmarkContext( )
+  const { onOpen } =useBookmarkContext( )
   const { user } = useUserContext();
  
   return (
