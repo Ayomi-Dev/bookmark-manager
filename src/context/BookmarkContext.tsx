@@ -35,7 +35,7 @@ export const BookmarkProvider = ({ children} : { children : ReactNode}) => {
     const [ tags, setTags ] = useState<string[]>([]);
     const { user } = useUserContext();
     const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
-    useEffect(() => {
+    useEffect(() => { //updates bookmarks whenever user changes i.e bookmark becomes accessible only when user is not null
         if(!user?.bookmarks) return;
         const retrievedBookmarks = user.bookmarks.map((bookmark) => (
             {
@@ -44,8 +44,8 @@ export const BookmarkProvider = ({ children} : { children : ReactNode}) => {
              }
         ))
         setBookmarks(retrievedBookmarks)
-        
-    }, [user])
+    }, [user]);
+    
     const addBookmark = (bookmark: Bookmark) => {
         setBookmarks(prevBookmarks => 
             [...prevBookmarks, bookmark]

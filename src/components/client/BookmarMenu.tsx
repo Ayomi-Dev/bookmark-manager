@@ -4,6 +4,7 @@ import { Menu, MenuButton, MenuItem, MenuList, Text } from "@chakra-ui/react"
 import { Edit } from "iconsax-reactjs"
 import { MoreVertical } from "./MoreVerticalIcon"
 import DeleteBookmarkButton from "./DeleteBookmarkButton"
+import Link from "next/link"
 
 
 export const BookmarkMenu = ({id}: {id: number}) => {
@@ -16,7 +17,9 @@ export const BookmarkMenu = ({id}: {id: number}) => {
       </MenuButton>
       <MenuList>
         <MenuItem display={"flex"} gap={2}>
+        <Link href={`/bookmark/edit/${id}`}>
             <Edit variant="Linear" size={15} />
+        </Link>
             <Text fontSize={"xs"} > Edit </Text>
         </MenuItem>
         <DeleteBookmarkButton id={id} />

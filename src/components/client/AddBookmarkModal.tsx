@@ -60,7 +60,6 @@ const AddBookmarkModal = () => {
             } )
           })
           const info = await data.json()
-          console.log(info.newBookmark.tags)
           addBookmark(info.newBookmark)
 
         }
