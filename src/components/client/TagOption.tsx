@@ -3,15 +3,14 @@ import { useBookmarkContext } from "@/context/BookmarkContext";
 import { Tags } from "@/types";
 import { Box, Checkbox, Flex, Heading, Text, VStack } from "@chakra-ui/react";
 const TagOption = () => {
-  const { addTags, tags, removeTags } = useBookmarkContext();
+  const { addFilterTag, filterTags, removeFilterTag } = useBookmarkContext();
 
   const handleTagToggle = (tag: string, isChecked: boolean) => {
     if(isChecked){
-      addTags(tag); 
-
+      addFilterTag(tag); 
     }
     else{
-      removeTags(tag)
+      removeFilterTag(tag)
     }
 
   }
@@ -46,8 +45,9 @@ const TagOption = () => {
               <Checkbox 
                 colorScheme="teal" 
                 size="sm" 
-                isChecked={tags.includes(tag)}
-                onChange={(e) =>handleTagToggle(tag, e.target.checked)}>
+                isChecked={filterTags.includes(tag)}
+                onChange={(e) =>handleTagToggle(tag, e.target.checked)}
+              >
                 <Text fontSize="sm">{tag}</Text>
               </Checkbox>
               <Text fontSize="xs" color="gray.500">

@@ -33,6 +33,7 @@ model Bookmark {
   icon         String?
   tags         String?
   description  String?
+  archived     Boolean    @default(false)
   timesVisited Int      @default(0)
   createdAt    DateTime @default(now())
   lastVisited  DateTime @default(now())

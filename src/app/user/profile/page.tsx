@@ -3,9 +3,15 @@ import { Grid } from '@chakra-ui/react';
 import { PageWrapper } from '@/utils/PageWrapper';
 import BookmarkCard from '@/components/client/BookmarkCard';
 import { useBookmarkContext } from '@/context/BookmarkContext';
+import { useEffect, useState } from 'react';
 
 const ProfilePage = () => {
-     const { bookmarks } = useBookmarkContext();
+  const { bookmarks, filteredBookmarks } = useBookmarkContext();
+  const [bookmarksToDisplay, setBookmarksToDisplay ]= useState(bookmarks)
+
+  useEffect(() => {
+    setBookmarksToDisplay(filteredBookmarks.length > 0 ? filteredBookmarks : bookmarks)
+  }, [filteredBookmarks, bookmarks])
         
   return (
     <PageWrapper>
@@ -15,7 +21,7 @@ const ProfilePage = () => {
         gap={3}
       >
         { 
-          bookmarks && bookmarks.map(bookmark => (
+          bookmarksToDisplay && bookmarksToDisplay?.map(bookmark => (
             <BookmarkCard bookmark={ bookmark } key={bookmark.id} />
           ))
         }
