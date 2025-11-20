@@ -48,6 +48,7 @@ const BookmarkCard = ( { bookmark }: BookmarkProp) => {
                     src={bookmark.icon}
                     alt="url-img"
                     fill
+                    sizes='100%'
                     style={{ objectFit: "cover" }}
                   />
                 </Box>

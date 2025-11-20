@@ -38,6 +38,7 @@ interface BookmarkContextType {
 
   // Filtered result
   filteredBookmarks: Bookmark[];
+  getCountOfTag: (tag: string) => number;
 }
 
 const BookmarkContext = createContext<BookmarkContextType | undefined>(undefined);
@@ -95,6 +96,10 @@ export const BookmarkProvider = ({ children }: { children: ReactNode }) => {
       setTags(prev => prev.filter(t => t !== tag));
     };
 
+    const getCountOfTag = (tag: string): number => {
+      return bookmarks.filter(bookmark => bookmark.tags.includes(tag)).length
+    }
+
     const value: BookmarkContextType = {
       isOpen,
       onOpen,
@@ -111,7 +116,8 @@ export const BookmarkProvider = ({ children }: { children: ReactNode }) => {
       bookmarks,
       addBookmark,
 
-      filteredBookmarks
+      filteredBookmarks,
+      getCountOfTag
     };
 
   return (

@@ -3,7 +3,7 @@ import { useBookmarkContext } from "@/context/BookmarkContext";
 import { Tags } from "@/types";
 import { Box, Checkbox, Flex, Heading, Text, VStack } from "@chakra-ui/react";
 const TagOption = () => {
-  const { addFilterTag, filterTags, removeFilterTag } = useBookmarkContext();
+  const { addFilterTag, filterTags, removeFilterTag, getCountOfTag } = useBookmarkContext();
 
   const handleTagToggle = (tag: string, isChecked: boolean) => {
     if(isChecked){
@@ -50,8 +50,14 @@ const TagOption = () => {
               >
                 <Text fontSize="sm">{tag}</Text>
               </Checkbox>
-              <Text fontSize="xs" color="gray.500">
-                1
+              <Text 
+                fontSize="xs" 
+                color="gray.500" 
+                bg={"brand.bgLight"}
+                px={2} py={1}
+                borderRadius={"50%"}
+              >
+                { getCountOfTag(tag) }
               </Text>
             </Flex>
           ))}
