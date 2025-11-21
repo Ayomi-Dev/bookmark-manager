@@ -1,5 +1,5 @@
 "use client";
-import { Bookmark } from '@/context/BookmarkContext';
+import { Bookmark, useBookmarkContext } from '@/context/BookmarkContext';
 import { Box, Divider, Flex, GridItem, Heading, HStack, Text } from '@chakra-ui/react';
 import { Calendar, Eye, Timer1 } from 'iconsax-reactjs';
 import { Pushpin } from './Pushpin';
@@ -11,6 +11,13 @@ interface BookmarkProp {
 }
 
 const BookmarkCard = ( { bookmark }: BookmarkProp) => {
+    const { bookmarkVisits } = useBookmarkContext();
+
+    const handleVisit = () => {
+        bookmarkVisits(bookmark.id)
+
+        window.open(bookmark.url, "_blank") //opens the url once the selected bookmark is opened
+    }
     
   return (
         <GridItem
@@ -21,6 +28,7 @@ const BookmarkCard = ( { bookmark }: BookmarkProp) => {
             display={"flex"}
             flexDir={"column"}
             justifyContent={"space-between"}
+            onClick={ handleVisit }
         >
             <Flex
                 justifyContent={"space-between"}

@@ -39,6 +39,8 @@ interface BookmarkContextType {
   // Filtered result
   filteredBookmarks: Bookmark[];
   getCountOfTag: (tag: string) => number;
+
+  bookmarkVisits: (id: number) => Promise<void>
 }
 
 const BookmarkContext = createContext<BookmarkContextType | undefined>(undefined);
@@ -100,6 +102,23 @@ export const BookmarkProvider = ({ children }: { children: ReactNode }) => {
       return bookmarks.filter(bookmark => bookmark.tags.includes(tag)).length
     }
 
+    //bookmark visit control
+    const bookmarkVisits = async(id: number) => {
+      try {
+        const res = await fetch(`/api/user/bookmarks/${id}/visit`, {
+          method: "PATCH"
+        })
+        const updatedBookmark = await res.json()
+
+        setBookmarks(prevBookmarks => 
+          prevBookmarks.map(bookmark => bookmark.id === id ? updatedBookmark : bookmark)
+        )
+      } 
+      catch (error) {
+        console.log(error, "Failed to update bookmark visit ")
+      }
+    }
+
     const value: BookmarkContextType = {
       isOpen,
       onOpen,
@@ -117,7 +136,8 @@ export const BookmarkProvider = ({ children }: { children: ReactNode }) => {
       addBookmark,
 
       filteredBookmarks,
-      getCountOfTag
+      getCountOfTag,
+      bookmarkVisits
     };
 
   return (

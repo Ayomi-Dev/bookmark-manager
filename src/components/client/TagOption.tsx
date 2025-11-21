@@ -37,7 +37,7 @@ const TagOption = () => {
               key={index}
               align="center"
               justify="space-between"
-              _hover={{ bg: "gray.100" }}
+              _hover={{ bg: "gray.100", color: "black", fontWeight: "bold" }}
               px={2}
               py={1}
               borderRadius="md"

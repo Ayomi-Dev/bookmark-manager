@@ -1,7 +1,6 @@
-import { Box, Divider, Flex, Heading, IconButton, Text, VStack } from '@chakra-ui/react'
+import { Box, Divider, Text, VStack } from '@chakra-ui/react'
 import React from 'react'
 import TagOption from './client/TagOption'
-import { Bookmark } from 'iconsax-reactjs'
 import Link from 'next/link'
 
 const SideBar = () => {
@@ -22,8 +21,7 @@ const SideBar = () => {
       <VStack align="stretch" spacing={3}>
          <Text
            fontWeight="medium"
-           color="gray.800"
-           bg="gray.100"
+           _hover={{ bg: "gray.100", color: "black", fontWeight: "bold" }}
            p={2}
            borderRadius="md"
          >
@@ -33,16 +31,15 @@ const SideBar = () => {
          </Text>
          <Text
            fontWeight="medium"
-           color="gray.600"
            p={2}
            borderRadius="md"
-           _hover={{ bg: "gray.100" }}
+           _hover={{ bg: "gray.100", color: "black", fontWeight: "bold" }}
          >
            Archived
          </Text>
-        </VStack>
+      </VStack>
       
-        <Divider my={4} />
+      <Divider my={4} />
       <TagOption />   
     </Box>
   )
