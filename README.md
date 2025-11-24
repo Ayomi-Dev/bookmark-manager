@@ -1,36 +1,119 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+📌 Bookmark Manager (React + TypeScript + Next.js)
 
-## Getting Started
+A modern, interactive bookmark management web app that allows users to save, organize, filter, and preview website bookmarks.
+Built with React, TypeScript, Next.js, Chakra UI, and Framer Motion.
 
-First, run the development server:
+Status: In Active Development
+Live Demo: Coming soon
 
-```bash
+✨ Features
+
+Automatic metadata fetching (title, description, favicon) when saving a URL
+
+Tag system with multi-tag filtering
+
+Debounced search for instant filtering
+
+Sorting options (Recently Added, A–Z, etc.)
+
+Hover preview cards
+
+Smooth animated list transitions
+
+“Last visited X days ago” badge
+
+Clean and responsive UI built with Chakra UI
+
+🛠️ Tech Stack
+
+Frontend: React, TypeScript, Next.js
+
+UI: Chakra UI
+
+Animations: Framer Motion
+
+State Management: React Context API
+
+Metadata Scraping: Custom Next.js API Route
+
+📂 Project Structure
+root/
+├── src/
+│   ├── components/       # UI components
+│   ├── context/          # Global state (bookmarks, filters, etc.)
+│   ├── pages/            # Next.js pages + API routes
+│   ├── lib/              # Metadata fetching utilities
+│   └── utils/            # Helpers & reusable functions
+├── public/
+└── README.md
+
+🚀 Getting Started
+Clone repository
+git clone https://github.com/your-username/your-repo.git
+cd your-repo
+
+Install dependencies
+npm install
+
+Run development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open the app
+http://localhost:3000
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+🧠 Metadata Fetching Logic
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The metadata is fetched through a custom Next.js API route that:
 
-## Learn More
+Receives the URL
 
-To learn more about Next.js, take a look at the following resources:
+Scrapes metadata (title, description, favicon)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Retries if the first fetch fails
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Normalizes the response before saving it
 
-## Deploy on Vercel
+Example structure of the API route:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+// /pages/api/metadata.ts
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+export default async function handler(req, res) {
+  try {
+    const { url } = req.query;
+
+    // fetch metadata...
+    // retry logic...
+    // normalize response...
+
+    return res.status(200).json(metadata);
+  } catch (error) {
+    return res.status(500).json({ error: "Failed to fetch metadata" });
+  }
+}
+
+📸 Screenshots
+
+(Add when ready)
+
+<!-- Example -->
+![Bookmark List](./screenshots/bookmark-list.png)
+
+📅 Roadmap
+
+ User authentication
+
+ Drag-and-drop sorting
+
+ Bookmark folders/collections
+
+ Dark mode
+
+ Deployment to Vercel
+
+🤝 Contributing
+
+Pull requests and issues are welcome.
+
+📜 License
+
+MIT License.

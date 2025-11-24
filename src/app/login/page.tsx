@@ -10,7 +10,7 @@ import React, { ChangeEvent, FormEvent, useState } from 'react'
 
 const LoginPage = () => {
   const router = useRouter();  
-  const { login, getUser } = useUserContext()
+  const { getUser } = useUserContext()
   const [userInfo, setUserInfo] = useState({
     email: "",
     password: ""
