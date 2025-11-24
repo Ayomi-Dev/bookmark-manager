@@ -99,7 +99,7 @@ export const BookmarkProvider = ({ children }: { children: ReactNode }) => {
     };
 
     const getCountOfTag = (tag: string): number => {
-      return bookmarks.filter(bookmark => bookmark.tags.includes(tag)).length
+      return bookmarks.filter(bookmark => bookmark?.tags?.includes(tag)).length
     }
 
     //bookmark visit control
@@ -110,6 +110,7 @@ export const BookmarkProvider = ({ children }: { children: ReactNode }) => {
         })
         const updatedBookmark = await res.json()
 
+        
         setBookmarks(prevBookmarks => 
           prevBookmarks.map(bookmark => bookmark.id === id ? updatedBookmark : bookmark)
         )

@@ -2,10 +2,10 @@
 
 import { Box, Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalOverlay, Tag, TagCloseButton, TagLabel, Text, Wrap, WrapItem } from "@chakra-ui/react"
 import { ChangeEvent, FormEvent, useEffect, useState } from "react"
-import { useBookmarkContext } from "@/context/BookmarkContext"
+import { Bookmark, useBookmarkContext } from "@/context/BookmarkContext"
 import Select from "react-select"
 import { Tags } from "@/types"
-import { useParams } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
 import { InputComponent } from "@/components/client/InputComponent"
 import { PageWrapper } from "@/utils/PageWrapper"
 
@@ -15,9 +15,10 @@ import { PageWrapper } from "@/utils/PageWrapper"
 
 const EditBookmark= () => {
     const { id } = useParams()
-    const { removeTags, bookmarks } = useBookmarkContext()
-    const bookmark = bookmarks.find( bookmark => bookmark.id === Number(id));
-    const [ newTags, setNewTags ] = useState(bookmark?.tags) //grabs the current tags of the selected bookmark
+    const [bookmark, setBookmark] = useState<Bookmark>()
+    const [ newTags, setNewTags ] = useState<string[]>() //grabs the current tags of the selected bookmark
+    const router = useRouter();
+    const [loading, setLoading ] = useState(false)
     
 
     const [bookmarkInfo, setBoomarkInfo] = useState({
@@ -38,7 +39,8 @@ const EditBookmark= () => {
                 if(!res.ok){
                     throw new Error("Cannot get bookmark at this time")
                 }
-                setBoomarkInfo(data.bookmark)
+                setBookmark(data.bookmark)
+                setNewTags(JSON.parse(data.bookmark.tags))
             }
             catch (error) {
                console.log(error) 
@@ -58,9 +60,13 @@ const EditBookmark= () => {
       setBoomarkInfo({...bookmarkInfo, [e.target.name]: e.target.value})
     }
 
+    const removeTagFromSelected = (tag: string) => {
+        setNewTags(prevTags => prevTags?.filter(t => t !== tag))
+    }
+
     const handleEditBookmark = async(e: FormEvent) => {
         e.preventDefault();
-        console.log("req sent")
+        setLoading(true)
         try {
           const  res = await fetch(`/api/user/bookmarks/${id}`, { //fsends the url to the backend api route
             method: "PUT",
@@ -71,15 +77,17 @@ const EditBookmark= () => {
           })
           const data = await res.json() //extracts the response so that its data  can be used in the next request
           if(!res.ok){
+            setLoading(false)
             throw new Error("Cannot fetch metadata at this point, please try again!");
           }
-          setBoomarkInfo(data.bookmark)
-        //   console.log(bookmarkInfo?.tags)
-
+          router.push(`/user/profile`) //redirects to the profile page after successful bookmark edit
           
         }
         catch (error) {
           console.log(error)
+        }
+        finally{
+            setLoading(false)
         }
 
     }
@@ -96,8 +104,8 @@ const EditBookmark= () => {
             mt={3}
         >
             <form onSubmit={handleEditBookmark}>
-                <InputComponent name="title" type="text" label="Title" value={bookmarkInfo?.title} onChange={handleChange} />
-                <InputComponent name="description" type="text" label="Description" value={bookmarkInfo?.description} onChange={handleChange} />
+                <InputComponent name="title" type="text" label="Title" value={bookmark?.title} onChange={handleChange} />
+                <InputComponent name="description" type="text" label="Description" value={bookmark?.description} onChange={handleChange} />
 
                 {/* Multi-select input */}
                 <Box mt={4}>
@@ -136,7 +144,7 @@ const EditBookmark= () => {
 
                 {/* Live preview of selected tags with remove button */}
                 {newTags && newTags?.length > 0 && (
-                <Box mt={3}>
+                <Box mt={3} py={2}>
                     <Text fontSize="sm" color="gray.500" mb={2}>
                     Selected tags:
                     </Text>
@@ -154,7 +162,7 @@ const EditBookmark= () => {
                         >
                             <TagLabel>{tag}</TagLabel>
                             <TagCloseButton
-                            onClick={() => removeTags(tag)}
+                            onClick={() => removeTagFromSelected(tag)}
                             />
                         </Tag>
                         </WrapItem>
@@ -164,12 +172,13 @@ const EditBookmark= () => {
                 )}
 
                 <Button
+                isLoading={loading}
                 type="submit"
                 size="md"
                 colorScheme="teal"
-                loadingText="Adding Bookmark..."
+                loadingText="Updating Bookmark..."
                 >
-                Add Bookmark
+                    Update Bookmark
                 </Button>
             </form>
         </Box>

@@ -6,19 +6,21 @@ import { ChangeEvent, FormEvent, useState } from "react"
 import { useBookmarkContext } from "@/context/BookmarkContext"
 import Select from "react-select"
 import { Tags } from "@/types"
+import NotificationModal from "@/utils/NotificationModal"
 
 
 
 
 
 const AddBookmarkModal = () => {
+  const [loading, setLoading] = useState(false)
     const tagOptions = Tags.map( tag => ( 
         { 
             value: tag,
             label: tag
         }
     ))
-    const { isOpen, onClose, tags, setTags, removeTags, addBookmark } = useBookmarkContext()
+    const { isOpen, onClose, tags, setTags, removeTag, addBookmark } = useBookmarkContext()
     const [url, setUrl] = useState("")
     const [bookmarkInfo, setBoomarkInfo] = useState({
       
@@ -29,9 +31,20 @@ const AddBookmarkModal = () => {
       setBoomarkInfo({...bookmarkInfo, [e.target.name]: e.target.value})
     }
 
+     const [notification, setNotification] = useState({ // Set notification state 
+        show: false,
+        type: "info" as "success" | "error" | "info",
+        message: "",
+        loading: false
+      });
+    
+       const closeNotification = () => { // closes notification modal
+         setNotification((prev) => ({ ...prev, show: false }));
+       }
+
     const handleAddBookmark = async(e: FormEvent) => {
         e.preventDefault();
-        console.log("req sent")
+        setLoading(true)
         try {
           const metadataRes = await fetch("/api/user/bookmarks/metadata", { //fsends the url to the backend api route
             method: "POST",
@@ -60,15 +73,40 @@ const AddBookmarkModal = () => {
             } )
           })
           const info = await data.json()
-          addBookmark(info.newBookmark)
+          if(!data.ok){
+            throw new Error("Cannot add bookmark at this time, please try again!")
+          }
+          else{
+            addBookmark(info.newBookmark)
+            onClose();
+              setNotification({
+                show: true,
+                type: "success",
+                message:`Bookmark successfully added!`,
+                loading: false
+              });
+          }
+          // setTimeout(() => {
+          //   window.location.reload(); //refreshes the page to show the new bookmark added
+          // }, 3000);
 
         }
         catch (error) {
           console.log(error)
+          setNotification({
+            show: true,
+            type: "error",
+            message:`${error}`,
+            loading: false
+          });
+        }
+        finally{
+          setLoading(false)
         }
 
     }
   return (
+    <Box>
      <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent maxW="800px">
@@ -132,7 +170,7 @@ const AddBookmarkModal = () => {
                       >
                         <TagLabel>{tag}</TagLabel>
                         <TagCloseButton
-                          onClick={() => removeTags(tag)}
+                          onClick={() => removeTag(tag)}
                         />
                       </Tag>
                     </WrapItem>
@@ -144,6 +182,7 @@ const AddBookmarkModal = () => {
 
           <ModalFooter>
             <Button
+              isLoading={loading}
               type="submit"
               size="md"
               colorScheme="teal"
@@ -155,6 +194,14 @@ const AddBookmarkModal = () => {
         </form>
       </ModalContent>
     </Modal>
+      <NotificationModal
+          show={notification.show}
+          type={notification.type}
+          message={notification.message}
+          onClose={closeNotification}
+          loading={notification.loading}
+        />
+    </Box>
   )
 }
 

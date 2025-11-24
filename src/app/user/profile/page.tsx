@@ -5,6 +5,9 @@ import BookmarkCard from '@/components/client/BookmarkCard';
 import { useBookmarkContext } from '@/context/BookmarkContext';
 import { useEffect, useState } from 'react';
 import { Sort } from 'iconsax-reactjs';
+import { motion, AnimatePresence } from 'framer-motion';
+
+const MotionGridItem = motion.create(Box)
 
 const ProfilePage = () => {
   const { bookmarks, filteredBookmarks } = useBookmarkContext();
@@ -102,11 +105,22 @@ const sortBookmarks = (type: string) => {
         templateColumns={"repeat(auto-fill, minmax(300px, 1fr))"}
         gap={3}
       >
+        <AnimatePresence>  
         { 
           bookmarksToDisplay && bookmarksToDisplay?.map(bookmark => (
-            <BookmarkCard bookmark={ bookmark } key={bookmark.id} />
+            <MotionGridItem
+              key={bookmark.id}
+              layout
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              transition={{ duration: 0.2 }}
+            >
+              <BookmarkCard bookmark={bookmark} />
+            </MotionGridItem>
           ))
         }
+        </AnimatePresence>
       </Grid>
     </PageWrapper>
   )
