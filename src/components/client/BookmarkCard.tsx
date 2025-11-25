@@ -46,7 +46,6 @@ const BookmarkCard = ( { bookmark }: BookmarkProp) => {
             boxShadow={"sm"}
             onMouseLeave={() => setIsHovering(false)}
             onMouseEnter={() => setIsHovering(true)}
-            // onClick={ handleVisit }
         >
             {/* <MotionBox
               position="absolute"
