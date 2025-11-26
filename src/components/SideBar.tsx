@@ -1,9 +1,13 @@
+"use client"
+
 import { Box, Divider, Text, VStack } from '@chakra-ui/react'
 import React from 'react'
 import TagOption from './client/TagOption'
 import Link from 'next/link'
+import { useBookmarkContext } from '@/context/BookmarkContext'
 
 const SideBar = () => {
+  const { archivedBookmarks } = useBookmarkContext();
   return (
     <Box 
       h={"100vh"} 
@@ -25,7 +29,7 @@ const SideBar = () => {
            p={2}
            borderRadius="md"
          >
-          <Link href={'/'}>
+          <Link href={'/user/profile'}>
            Home
           </Link>
          </Text>
@@ -35,7 +39,9 @@ const SideBar = () => {
            borderRadius="md"
            _hover={{ bg: "gray.100", color: "black", fontWeight: "bold" }}
          >
-           Archived
+          <Link href={`/user/archived/bookmarks`}>
+           Archived ({ archivedBookmarks.length})
+          </Link>
          </Text>
       </VStack>
       

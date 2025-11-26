@@ -15,8 +15,8 @@ interface BookmarkProp {
 
 const MotionBox = motion.create(Box); //motion effects for hover preview
 
-const BookmarkCard = ( { bookmark }: BookmarkProp) => {
-    const { bookmarkVisits } = useBookmarkContext();
+const BookmarkCard = ( { bookmark } : BookmarkProp) => {
+    const { bookmarkVisits, deleteBookmark } = useBookmarkContext();
     const dateCreated = new Date(bookmark?.createdAt) //extracts date created info
     const dateVisited = new Date(bookmark?.lastVisited) //extract date last visited info
     const monthCreated = dateCreated.toLocaleString('default', { month: 'short' });
@@ -30,8 +30,13 @@ const BookmarkCard = ( { bookmark }: BookmarkProp) => {
     const handleVisit = () => {
         bookmarkVisits(bookmark.id)
 
-        window.open(bookmark.url, "_blank") //opens the url of the selected bookmark
+        window.open(bookmark.url, "_blank") //opens the url of the selected bookmark in another tab
     }
+
+
+    const handleDelete = () => { //deletes selected bookmark
+        deleteBookmark(bookmark.id)
+     }
     
   return (
         <Box
@@ -104,8 +109,6 @@ const BookmarkCard = ( { bookmark }: BookmarkProp) => {
                     h={"full"}
                     gap={3}
                 >
-                        
-
                     <Box
                     w="30px"
                     h="30px"
@@ -141,7 +144,7 @@ const BookmarkCard = ( { bookmark }: BookmarkProp) => {
                             </Text>
                         </Box>
                     </HStack> 
-                    <BookmarkMenu id={ bookmark.id }/>
+                    <BookmarkMenu id={ bookmark.id } handleDelete={handleDelete}/>
                 </Flex>
                 <Divider py={1} />
                 <Box

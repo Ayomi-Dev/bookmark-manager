@@ -5,9 +5,17 @@ import { Archive, Edit } from "iconsax-reactjs"
 import { MoreVertical } from "./MoreVerticalIcon"
 import DeleteBookmarkButton from "./DeleteBookmarkButton"
 import Link from "next/link"
+import { FC } from "react"
+import { useBookmarkContext } from "@/context/BookmarkContext"
 
 
-export const BookmarkMenu = ({id}: {id: number}) => {
+interface BookmarkMenuProp {
+  id: number;
+  handleDelete?: () => void
+}
+
+export const BookmarkMenu: FC<BookmarkMenuProp> = ({id, handleDelete}) => {
+  const { toggleArchive } = useBookmarkContext()
   return (
     <Menu>
       <MenuButton 
@@ -25,14 +33,15 @@ export const BookmarkMenu = ({id}: {id: number}) => {
             <Text fontSize={"xs"} > Edit </Text>
         </Link>
         </MenuItem>
-        <MenuItem 
+        <MenuItem  
          display={"flex"}
          gap={2}
+         onClick={() => toggleArchive(id)}
          >
             <Archive variant="Linear" size={15} />
             <Text fontSize={"xs"} > Archive </Text>
         </MenuItem>
-        <DeleteBookmarkButton id={id} />
+        <DeleteBookmarkButton handleDelete={handleDelete}   />
       </MenuList>
     </Menu>
   )

@@ -8,8 +8,10 @@ import React, { ChangeEvent, FormEvent, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { PageWrapper } from '@/utils/PageWrapper'
 import NotificationModal from '@/utils/NotificationModal'
+import { useUserContext } from '@/context/UserContext'
 
 const SignUpPage = () => {
+  const {getUser, user} = useUserContext();
   const router = useRouter();
   const [userInfo, setUserInfo] = useState({
     name: "",
@@ -50,19 +52,24 @@ const SignUpPage = () => {
       if(!res.ok){
         throw new Error("something went wrong")
       }
+      else{
+        getUser();
+        
+        setTimeout(() => {
+          setNotification({
+            show: true,
+            type: "success",
+            message: `Welcome onboard ${user?.name}`,
+            loading: false
+          })
+        }, 1500);
+
+
+        setTimeout(() => { 
+          router.push('/user/profile') //redirects to user's profile page after signup is complete
+        }, 3000);
+      }
       
-      const data = await res.json();
-      setTimeout(() => {
-        setNotification({
-          show: true,
-          type: "success",
-          message: `Welcome onboard ${data?.user.name}`,
-          loading: false
-        })
-      }, 1500);
-      setTimeout(() => {
-        router.push('/user/profile')
-      }, 3000);
 
     } catch (error) {
       console.log(error)

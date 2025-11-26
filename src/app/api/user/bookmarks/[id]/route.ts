@@ -30,7 +30,7 @@ export const GET = async(req: NextRequest, { params}: { params: { id: string}}) 
 
         return NextResponse.json(
             { bookmark },
-            { status: 200}
+            { status: 200 }
         )
 
     }
@@ -47,14 +47,16 @@ export const GET = async(req: NextRequest, { params}: { params: { id: string}}) 
 export const PUT = async (req: NextRequest, { params}: {params: {id: string}}) => {
     try {
         const userId = req.headers.get("userId");
-            if(!userId){
-                return NextResponse.json(
-                    { error: "Unauthorized operation!: No user logged in"},
-                    { status: 401}
-                )
-            }
+
+        if(!userId){
+            return NextResponse.json(
+                { error: "Unauthorized operation!: No user logged in"},
+                { status: 401}
+            )
+        }
+
         const bookmarkId = await params;
-        const id = Number(bookmarkId.id)
+        const id = Number(bookmarkId.id);
         const body = await req.json();
         const { title, url, description, tags } = body;
 
@@ -89,7 +91,6 @@ export const DELETE = async (req: NextRequest, { params}: { params: { id: string
         const bookmarkId= await params
         const id  = Number(bookmarkId.id)
         const userId = req.headers.get("userId")
-        console.log(id)
        if(!userId){
             return NextResponse.json(
                 { error: "Unauthorized request: No user found" },

@@ -15,6 +15,7 @@ export type Bookmark = {
   timesVisited: number;
   lastVisited: Date;
   createdAt: Date;
+  isArchived: boolean;
 };
 
 interface BookmarkContextType {
@@ -35,12 +36,20 @@ interface BookmarkContextType {
   // Bookmarks update and creation
   bookmarks: Bookmark[];
   addBookmark: (bookmark: Bookmark) => void;
+  getBookmarks: () => Promise<void>;
 
   // Filtered result
   filteredBookmarks: Bookmark[];
   getCountOfTag: (tag: string) => number;
 
   bookmarkVisits: (id: number) => Promise<void>
+
+  //delete control
+  deleteBookmark: (id: number) => Promise<void>
+
+  //archive control
+  toggleArchive: (id: number) => Promise<void>
+  archivedBookmarks: Bookmark[];
 }
 
 const BookmarkContext = createContext<BookmarkContextType | undefined>(undefined);
@@ -48,40 +57,49 @@ const BookmarkContext = createContext<BookmarkContextType | undefined>(undefined
 export const BookmarkProvider = ({ children }: { children: ReactNode }) => {
     const { onClose, onOpen, isOpen } = useDisclosure();
     const { user } = useUserContext();
-
     const [tags, setTags] = useState<string[]>([]);
-
     const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
     const [filterTags, setFilterTags] = useState<string[]>([]);
     const [filteredBookmarks, setFilteredBookmarks] = useState<Bookmark[]>([]);
+    const [archivedBookmarks, setArchivedBookmarks] = useState<Bookmark[]>([])
 
 
-    useEffect(() => {//Loads bookmarks when user changes
-        if (!user?.bookmarks) return;
-      
-        const retrievedBookmarks = user.bookmarks.map(bookmark => ({
-          ...bookmark,
-          tags: typeof bookmark.tags === "string" ? JSON.parse(bookmark.tags) : bookmark.tags
-        }));
-      
-        setBookmarks(retrievedBookmarks);
+    const getBookmarks = async () => {
+      try {
+        const res = await fetch(`/api/user/bookmarks`, {
+          method: "GET",
+        })
+
+        const data = await res.json();
+        if(!res.ok){
+          throw new Error("Couldn't fetch bookmarks at this time");
+        }
+        setBookmarks(data.bookmarks.filter((bookmark: Bookmark) => !bookmark.isArchived));
+        setArchivedBookmarks(data.bookmarks.filter((bookmark: Bookmark) => bookmark.isArchived));
+      }
+      catch (error) {
+       console.log(`${error}: No bookmarks`) 
+      }
+    }
+    useEffect(() => {//Loads bookmarks once user logs in 
+      getBookmarks();
     }, [user]);
 
     useEffect(() => {
-        if (filterTags.length === 0) { // Auto-filters whenever bookmarks or filterTags change
-          setFilteredBookmarks(bookmarks);
-          return;
-        }
+      if (filterTags.length === 0) { // Auto-filters whenever bookmarks or filterTags change
+        setFilteredBookmarks(bookmarks);
+        return;
+      }
       
-        const filtered = bookmarks.filter(bookmark =>
-          filterTags.some(tag => bookmark.tags.includes(tag))
-        );
+      const filtered = bookmarks?.filter(bookmark =>
+        filterTags.some(tag => bookmark.tags.includes(tag))
+      );
       
-        setFilteredBookmarks(filtered);
+      setFilteredBookmarks(filtered);
     }, [filterTags, bookmarks]);
 
     const addBookmark = (bookmark: Bookmark) => {
-      setBookmarks(prev => [...prev, bookmark]); // Adds new bookmark
+      // setBookmarks(prev => [...prev, bookmark]); // Adds new bookmark
     };
 
      //FilterTag controls
@@ -98,8 +116,8 @@ export const BookmarkProvider = ({ children }: { children: ReactNode }) => {
       setTags(prev => prev.filter(t => t !== tag));
     };
 
-    const getCountOfTag = (tag: string): number => {
-      return bookmarks.filter(bookmark => bookmark?.tags?.includes(tag)).length
+    const getCountOfTag = (tag: string): number => { //returns the coubnt of bookmarks with a specific tag
+      return bookmarks?.filter(bookmark => bookmark?.tags?.includes(tag)).length
     }
 
     //bookmark visit control
@@ -108,17 +126,57 @@ export const BookmarkProvider = ({ children }: { children: ReactNode }) => {
         const res = await fetch(`/api/user/bookmarks/${id}/visit`, {
           method: "PATCH"
         })
-        const updatedBookmark = await res.json()
-
-        
-        setBookmarks(prevBookmarks => 
-          prevBookmarks.map(bookmark => bookmark.id === id ? updatedBookmark : bookmark)
-        )
+        getBookmarks();
       } 
       catch (error) {
         console.log(error, "Failed to update bookmark visit ")
       }
     }
+
+     const deleteBookmark = async( id: number ) => {
+      try {
+        const res = await fetch(`/api/user/bookmarks/${id}`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            userId: `${user?.id}`
+          },
+
+        })
+        const data = await res.json();
+        if(!res.ok){
+          throw new Error(data.error || "Failed to delete")
+        }
+
+        await getBookmarks();
+        // setTimeout(() => {
+        //   window.location.reload();
+        // }, 1000);
+      } 
+      catch (error) {
+          console.log(error, "Unable to delete bookmark!")
+      }
+    }
+
+      //Bookmark archive controls
+    const toggleArchive = async(id: number) => {
+      try {
+        const res =  await fetch(`/api/user/bookmarks/archived/${id}`, {
+          method: "PATCH",
+        });
+        // const data = await res.json();
+        if(!res.ok){
+          throw new Error( "Failed to archived bookmark!")
+        }
+        await getBookmarks();
+
+      }
+      catch (error) {
+        console.log(error, "Archive bookmark failed!")
+      }
+      
+    }
+
 
     const value: BookmarkContextType = {
       isOpen,
@@ -135,10 +193,15 @@ export const BookmarkProvider = ({ children }: { children: ReactNode }) => {
 
       bookmarks,
       addBookmark,
+      getBookmarks,
 
       filteredBookmarks,
       getCountOfTag,
-      bookmarkVisits
+      bookmarkVisits,
+      deleteBookmark,
+
+      toggleArchive,
+      archivedBookmarks
     };
 
   return (

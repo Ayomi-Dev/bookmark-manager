@@ -7,7 +7,6 @@ const prisma = new PrismaClient()
 
 
 export const POST = async(req: NextRequest) => {
-    console.log("login hit")
     try {
         const body = await req.json()
         const { email, password } = body;
@@ -25,7 +24,6 @@ export const POST = async(req: NextRequest) => {
         })
         
         if(!existingUser) {
-            console.log("password or email issue")
             return NextResponse.json(
                 { message: "User does not exist!"},
                 { status: 400 }
@@ -49,7 +47,6 @@ export const POST = async(req: NextRequest) => {
 
         const payload = { id: existingUser.id, isAdmin: existingUser.isAdmin } 
         const token = signToken( payload );
-        console.log(token, "in login")
 
         const response = NextResponse.json( 
             { 

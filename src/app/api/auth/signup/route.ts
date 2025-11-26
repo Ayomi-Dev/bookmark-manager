@@ -48,7 +48,7 @@ export const POST = async (req: NextRequest ) => {
         const payload = { id: user.id, email: user.email }
         const token = signToken( payload )
 
-        return NextResponse.json(
+       const response = NextResponse.json(
             { 
                 message: `Welcome ${user.name}`, 
                 user: {
@@ -56,9 +56,18 @@ export const POST = async (req: NextRequest ) => {
                     name: user.name,
                     email: user.email
                 }
-            },
+            }, 
             { status: 201 }
-        )
+        );
+
+         response.cookies.set("token", token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "strict",
+            path: '/',
+            maxAge: 60 * 60
+        });
+        return response;
     } 
 
     catch (error) {

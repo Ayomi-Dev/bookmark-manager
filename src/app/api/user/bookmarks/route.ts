@@ -57,3 +57,43 @@ export const POST = async(req: NextRequest) => {
         );
     }
 }
+
+export const GET = async(req: NextRequest) => {
+    try {
+        const userId = req.headers.get("userID");
+    
+        if(!userId){
+            return NextResponse.json(
+                { error: "Unaduthorized request: No user found"},
+                { status: 401 }
+            )
+        }
+    
+        const user = await prisma.user.findUnique(
+            {
+                where: { id: userId },
+                include: { bookmarks: true}
+            }
+        )
+        if(!user){
+            return NextResponse.json(
+                { error: "No User Found!"},
+                { status: 404 }
+            )
+        }
+    
+        return NextResponse.json(
+            { 
+               bookmarks: user.bookmarks
+            },
+            { status: 200}
+        )
+        
+    } 
+    catch (error) {
+        console.log(error);
+        return NextResponse.json(
+            { error: `${error}: Unable to get bookmarks` }
+        )
+    }
+}

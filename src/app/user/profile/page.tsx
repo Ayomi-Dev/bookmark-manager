@@ -14,7 +14,7 @@ const ProfilePage = () => {
   const [bookmarksToDisplay, setBookmarksToDisplay ]= useState(bookmarks)
 
   useEffect(() => {
-    setBookmarksToDisplay(filteredBookmarks.length > 0 ? filteredBookmarks : bookmarks)
+    setBookmarksToDisplay(filteredBookmarks?.length > 0 ? filteredBookmarks : bookmarks)
   }, [filteredBookmarks, bookmarks])
 
   
