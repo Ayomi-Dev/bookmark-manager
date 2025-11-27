@@ -23,26 +23,26 @@ const SideBar = () => {
     >
       
       <VStack align="stretch" spacing={3}>
-         <Text
-           fontWeight="medium"
-           _hover={{ bg: "gray.100", color: "black", fontWeight: "bold" }}
-           p={2}
-           borderRadius="md"
-         >
-          <Link href={'/user/profile'}>
-           Home
-          </Link>
-         </Text>
-         <Text
-           fontWeight="medium"
-           p={2}
-           borderRadius="md"
-           _hover={{ bg: "gray.100", color: "black", fontWeight: "bold" }}
-         >
-          <Link href={`/user/archived/bookmarks`}>
-           Archived ({ archivedBookmarks.length})
-          </Link>
-         </Text>
+        <Link href={'/user/profile'}>
+          <Text
+            fontWeight="medium"
+            _hover={{ bg: "gray.100", color: "black", fontWeight: "bold" }}
+            p={2}
+            borderRadius="md"
+          >
+            Home
+          </Text>
+        </Link>
+        <Link href={`/user/archived/bookmarks`}>
+          <Text
+            fontWeight="medium"
+            p={2}
+            borderRadius="md"
+            _hover={{ bg: "gray.100", color: "black", fontWeight: "bold" }}
+          >
+            Archived ({ archivedBookmarks.length})
+          </Text>
+        </Link>
       </VStack>
       
       <Divider my={4} />

@@ -1,6 +1,6 @@
 "use client"
 
-import { Box, Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalOverlay, Tag, TagCloseButton, TagLabel, Text, Wrap, WrapItem } from "@chakra-ui/react"
+import { Box, Button,  Tag, TagCloseButton, TagLabel, Text, Wrap, WrapItem } from "@chakra-ui/react"
 import { ChangeEvent, FormEvent, useEffect, useState } from "react"
 import { Bookmark, useBookmarkContext } from "@/context/BookmarkContext"
 import Select from "react-select"
@@ -8,6 +8,7 @@ import { Tags } from "@/types"
 import { useParams, useRouter } from "next/navigation"
 import { InputComponent } from "@/components/client/InputComponent"
 import { PageWrapper } from "@/utils/PageWrapper"
+import NotificationModal from "@/utils/NotificationModal"
 
 
 
@@ -15,16 +16,26 @@ import { PageWrapper } from "@/utils/PageWrapper"
 
 const EditBookmark= () => {
     const { id } = useParams()
-    const [bookmark, setBookmark] = useState<Bookmark>()
+    const { getBookmarks } = useBookmarkContext();
     const [ newTags, setNewTags ] = useState<string[]>() //grabs the current tags of the selected bookmark
     const router = useRouter();
     const [loading, setLoading ] = useState(false)
-    
-
     const [bookmarkInfo, setBoomarkInfo] = useState({
         title: "",
         description: "",
-    })
+    });
+    const [notification, setNotification] = useState({ // Set notification state 
+        show: false,
+        type: "info" as "success" | "error" | "info",
+        message: "",
+        loading: false
+      });
+      
+    const closeNotification = () => { // closes notification modal
+        setNotification((prev) => ({ ...prev, show: false }));
+    }
+
+    
 
     useEffect(() => {
         const getCurrentBookmark = async () => {
@@ -39,8 +50,13 @@ const EditBookmark= () => {
                 if(!res.ok){
                     throw new Error("Cannot get bookmark at this time")
                 }
-                setBookmark(data.bookmark)
-                setNewTags(JSON.parse(data.bookmark.tags))
+                else{
+                    setNewTags(JSON.parse(data.bookmark.tags))
+                    setBoomarkInfo({
+                        title: data.bookmark.title,
+                        description: data.bookmark.description
+                    })
+                }
             }
             catch (error) {
                console.log(error) 
@@ -48,7 +64,9 @@ const EditBookmark= () => {
         }
         getCurrentBookmark()
     }, [])
-    const tagOptions = Tags.map( tag => ( 
+
+    
+    const tagOptions = Tags.map( tag => ( //transforms tags into object
         { 
             value: tag,
             label: tag
@@ -66,25 +84,43 @@ const EditBookmark= () => {
 
     const handleEditBookmark = async(e: FormEvent) => {
         e.preventDefault();
-        setLoading(true)
+        setLoading(true);
         try {
-          const  res = await fetch(`/api/user/bookmarks/${id}`, { //fsends the url to the backend api route
+          const  res = await fetch(`/api/user/bookmarks/${id}`, { //sends the url to the backend api route
             method: "PUT",
             headers: {
               "Content-Type": "application/json"
             },
             body: JSON.stringify({...bookmarkInfo, tags: JSON.stringify(newTags) })
           })
-          const data = await res.json() //extracts the response so that its data  can be used in the next request
           if(!res.ok){
             setLoading(false)
             throw new Error("Cannot fetch metadata at this point, please try again!");
           }
-          router.push(`/user/profile`) //redirects to the profile page after successful bookmark edit
+          else{
+            setBoomarkInfo({
+                title: "",
+                description: ""
+            })
+            setNotification({
+                show: true,
+                type: "success",
+                message:`Bookmark successfully updated!`,
+                loading: false
+            });
+            await getBookmarks();
+            router.push(`/user/profile`) //redirects to the profile page after successful bookmark edit
+          }
           
         }
         catch (error) {
           console.log(error)
+          setNotification({
+            show: true,
+            type: "error",
+            message:`${error}`,
+            loading: false
+          });
         }
         finally{
             setLoading(false)
@@ -104,8 +140,8 @@ const EditBookmark= () => {
             mt={3}
         >
             <form onSubmit={handleEditBookmark}>
-                <InputComponent name="title" type="text" label="Title" value={bookmark?.title} onChange={handleChange} />
-                <InputComponent name="description" type="text" label="Description" value={bookmark?.description} onChange={handleChange} />
+                <InputComponent name="title" type="text" label="Title" value={bookmarkInfo?.title} onChange={handleChange} />
+                <InputComponent name="description" type="text" label="Description" value={bookmarkInfo?.description} onChange={handleChange} />
 
                 {/* Multi-select input */}
                 <Box mt={4}>
@@ -182,6 +218,13 @@ const EditBookmark= () => {
                 </Button>
             </form>
         </Box>
+        <NotificationModal
+            show={notification.show}
+            type={notification.type}
+            message={notification.message}
+            onClose={closeNotification}
+            loading={notification.loading}
+        />
     </PageWrapper>
   )
 }

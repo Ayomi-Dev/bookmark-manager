@@ -1,7 +1,7 @@
 "use client"
 
 import { Menu, MenuButton, MenuItem, MenuList, Text } from "@chakra-ui/react"
-import { Archive, Edit } from "iconsax-reactjs"
+import { Archive, ArchiveSlash, Edit } from "iconsax-reactjs"
 import { MoreVertical } from "./MoreVerticalIcon"
 import DeleteBookmarkButton from "./DeleteBookmarkButton"
 import Link from "next/link"
@@ -12,9 +12,10 @@ import { useBookmarkContext } from "@/context/BookmarkContext"
 interface BookmarkMenuProp {
   id: number;
   handleDelete?: () => void
+  archived: boolean;
 }
 
-export const BookmarkMenu: FC<BookmarkMenuProp> = ({id, handleDelete}) => {
+export const BookmarkMenu: FC<BookmarkMenuProp> = ({id, handleDelete, archived}) => {
   const { toggleArchive } = useBookmarkContext()
   return (
     <Menu>
@@ -38,8 +39,12 @@ export const BookmarkMenu: FC<BookmarkMenuProp> = ({id, handleDelete}) => {
          gap={2}
          onClick={() => toggleArchive(id)}
          >
-            <Archive variant="Linear" size={15} />
-            <Text fontSize={"xs"} > Archive </Text>
+            { archived ? 
+              <ArchiveSlash variant="Linear" size={15} />
+              :
+              <Archive variant="Linear" size={15} />
+            }
+            <Text fontSize={"xs"} > { archived ? "Unarchive" : "Archive"} </Text>
         </MenuItem>
         <DeleteBookmarkButton handleDelete={handleDelete}   />
       </MenuList>

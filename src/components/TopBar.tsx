@@ -25,11 +25,12 @@ const TopBar = () => {
         alignItems={"center"}
         gap={2}
         px={3}
+        w={"50%"}
       >
         
-        <HStack mr={4}>
+        <HStack w={"40%"}>
           <IconButton aria-label='bookmark'
-          icon={<Bookmark size={15} variant='Linear' />}
+            icon={<Bookmark size={15} variant='Linear' />}
             size={"sm"}
             bg={"teal.700"}
           />
@@ -40,7 +41,10 @@ const TopBar = () => {
             Bookmark Manager
           </Text>
         </HStack>
+
+        {/* search bar component */}
         <SearchBar />
+
       </Flex>
       <Box
         display={"flex"}

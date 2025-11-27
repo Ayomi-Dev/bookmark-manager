@@ -6,6 +6,7 @@ import { useBookmarkContext } from '@/context/BookmarkContext';
 import { useEffect, useState } from 'react';
 import { Sort } from 'iconsax-reactjs';
 import { motion, AnimatePresence } from 'framer-motion';
+import { AddBookmarkButon } from '@/components/client/AddBookmarkButon';
 
 const MotionGridItem = motion.create(Box)
 
@@ -101,6 +102,15 @@ const sortBookmarks = (type: string) => {
           </MenuList>
         </Menu>
       </Flex>
+      {!bookmarksToDisplay || bookmarksToDisplay.length === 0 && (
+        <Box
+          textAlign={"center"}
+          py={10}
+        >
+          <Text fontWeight={"extrabold"} fontSize={"x-large"}> No Bookmarks Yet</Text>
+          <AddBookmarkButon />
+        </Box>
+      )}
       <Grid
         templateColumns={"repeat(auto-fill, minmax(300px, 1fr))"}
         gap={3}

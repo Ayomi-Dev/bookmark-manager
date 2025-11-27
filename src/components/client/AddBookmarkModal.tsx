@@ -70,14 +70,16 @@ const AddBookmarkModal = () => {
         throw new Error("Cannot add bookmark at this time, please try again!")
       }
       else{
-        getBookmarks();
+        await getBookmarks();
         setNotification({
           show: true,
           type: "success",
           message:`Bookmark successfully added!`,
           loading: false
         });
-        // onClose();
+        setUrl("")
+        setTags([]);
+        onClose();
       }
     }
     catch (error) {
@@ -87,7 +89,7 @@ const AddBookmarkModal = () => {
         type: "error",
         message:`${error}`,
         loading: false
-      });
+      }); 
     }
     finally{
       setLoading(false)

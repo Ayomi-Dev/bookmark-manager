@@ -1,6 +1,6 @@
 "use client"
 
-import { Box, Flex, Input } from '@chakra-ui/react'
+import { Flex, Input } from '@chakra-ui/react'
 import { SearchNormal } from 'iconsax-reactjs'
 import React from 'react'
 
@@ -19,6 +19,10 @@ export const SearchBar = () => {
             placeholder='Search bookmarks'
             fontSize={"1rem"}
             color={"brand.textLight"}
+            border={"none"}
+            variant="unstyled"
+            _placeholder={{ fontSize: "14px"}}
+            py={1}
          />
     </Flex>
   )
