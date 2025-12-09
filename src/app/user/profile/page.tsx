@@ -1,14 +1,14 @@
 "use client"
-import { Box, Flex, Grid, Heading, Menu, MenuButton, MenuItem, MenuList, Text } from '@chakra-ui/react';
+import { Box, Flex, Grid, Heading, Text } from '@chakra-ui/react';
 import { PageWrapper } from '@/utils/PageWrapper';
 import BookmarkCard from '@/components/client/BookmarkCard';
 import { useBookmarkContext } from '@/context/BookmarkContext';
 import { useEffect, useState } from 'react';
-import { Sort } from 'iconsax-reactjs';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AddBookmarkButon } from '@/components/client/AddBookmarkButon';
+import { SortMenu } from '@/components/client/SortMenu';
 
-const MotionGridItem = motion.create(Box)
+const MotionGridItem = motion.create(Box) //wrapsbookmark card in an animation box
 
 const ProfilePage = () => {
   const { bookmarks, filteredBookmarks } = useBookmarkContext();
@@ -19,34 +19,6 @@ const ProfilePage = () => {
   }, [filteredBookmarks, bookmarks])
 
   
-  // sort control
-const sortBookmarks = (type: string) => {
-  setBookmarksToDisplay(prev => {
-    const copy = [...prev];
-
-    if (type === "recently added") {
-      return copy.sort((a, b) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-      );
-    }
-
-    if (type === "recently visited") {
-      return copy.sort((a, b) =>
-        new Date(b.lastVisited ?? 0).getTime() - new Date(a.lastVisited ?? 0).getTime()
-      );
-    }
-
-    if (type === "most visited") {
-      return copy.sort((a, b) =>
-        (b.timesVisited ?? 0) - (a.timesVisited ?? 0)
-      );
-    }
-
-    return copy;
-  });
-};
-
-
 
   return (
     <PageWrapper>
@@ -60,48 +32,12 @@ const sortBookmarks = (type: string) => {
         >
           All Bookmarks
         </Heading>
-        <Menu>
-          <MenuButton
-          >
-            <Flex
-              display={"flex"}
-              gap={2}
-              alignItems={"center"}
-              fontWeight={"bold"}
-              bg={"brand.secBg"}
-              _dark={{bg:"brand.bgDark"}}
-              borderRadius={"5px"}
-              px={2} py={1}
-            >
-              <Sort variant='Linear' size={10} />
-              <Text
-                fontSize={"12px"}
-              >
-                Sort By 
-              </Text>
 
-            </Flex>
-          </MenuButton>
+        {/* Sort menu options */}
+        <SortMenu setBookmarksToDisplay = { setBookmarksToDisplay }  />
 
-          <MenuList>
-            <MenuItem
-              onClick={() => sortBookmarks("recently added")}
-            >
-              Recently Added
-            </MenuItem>
-            <MenuItem
-              onClick={() => sortBookmarks("recently visited")}
-            >
-              Recently Visited
-            </MenuItem>
-            <MenuItem
-              onClick={() => sortBookmarks("most visited")}
-            >
-              Most Visited
-            </MenuItem>
-          </MenuList>
-        </Menu>
       </Flex>
+
       {!bookmarksToDisplay || bookmarksToDisplay.length === 0 && (
         <Box
           textAlign={"center"}
@@ -111,6 +47,8 @@ const sortBookmarks = (type: string) => {
           <AddBookmarkButon />
         </Box>
       )}
+
+      {/* Bookmark cards container */}
       <Grid
         templateColumns={"repeat(auto-fill, minmax(300px, 1fr))"}
         gap={3}

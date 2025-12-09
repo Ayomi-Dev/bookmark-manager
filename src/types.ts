@@ -9,7 +9,7 @@ export const Tags = [
     "HTML",
     "JavaScript",
     "Layout",
-    "Learnig",
+    "Learning",
     "Performance",
     "Practice",
     "Reference",

@@ -35,7 +35,6 @@ interface BookmarkContextType {
 
   // Bookmarks update and creation
   bookmarks: Bookmark[];
-  addBookmark: (bookmark: Bookmark) => void;
   getBookmarks: () => Promise<void>;
 
   // Filtered result
@@ -98,9 +97,7 @@ export const BookmarkProvider = ({ children }: { children: ReactNode }) => {
       setFilteredBookmarks(filtered);
     }, [filterTags, bookmarks]);
 
-    const addBookmark = (bookmark: Bookmark) => {
-      // setBookmarks(prev => [...prev, bookmark]); // Adds new bookmark
-    };
+    
 
      //FilterTag controls
     const addFilterTag = (tag: string) => {
@@ -149,9 +146,6 @@ export const BookmarkProvider = ({ children }: { children: ReactNode }) => {
         }
 
         await getBookmarks();
-        // setTimeout(() => {
-        //   window.location.reload();
-        // }, 1000);
       } 
       catch (error) {
           console.log(error, "Unable to delete bookmark!")
@@ -192,7 +186,6 @@ export const BookmarkProvider = ({ children }: { children: ReactNode }) => {
       removeFilterTag,
 
       bookmarks,
-      addBookmark,
       getBookmarks,
 
       filteredBookmarks,
