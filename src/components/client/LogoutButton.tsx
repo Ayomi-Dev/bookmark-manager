@@ -10,7 +10,6 @@ const LogoutButton = () => {
     
     const handleLogout = () => {
       logout()
-      console.log(user)
     }
   return (
     <MenuItem

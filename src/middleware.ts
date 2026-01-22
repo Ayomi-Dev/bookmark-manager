@@ -8,7 +8,7 @@ interface UserPayload {
 }
 
 // Routes that require authentication
-const protectedRoutes = ["/api/user/profile", "/api/user/bookmarks", "/dashboard"];
+const protectedRoutes = ["/api/user/profile", "/api/user/bookmarks", "/api/bookmarks/archived", "/dashboard"];
 
 export async function middleware(req: NextRequest) {
     const { pathname } = req.nextUrl;
@@ -19,30 +19,28 @@ export async function middleware(req: NextRequest) {
     );
 
     if(isProtected){
-        const token = req.cookies.get("token")?.value;  // Extracts token from cookies
-        // console.log("middleware hit)", token)
-        if (!token) {
-            return NextResponse.json(
-              { message: "Authentication required!" },
-              { status: 401 }
-            );
-        }
+      const token = req.cookies.get("token")?.value;  // Extracts token from cookies
+      // console.log("middleware hit)", token)
+      if (!token) {
+        return NextResponse.json(
+          { message: "Authentication required!" },
+          { status: 401 }
+        );
+      }
+      const decoded = await verifyToken(token);           // Verifies the extracted token
+      // console.log(decoded, "Decoded token in middleware");
+      if (!decoded) {
+        // const response = NextResponse.redirect(new URL('/login', req.url))
+        // response.cookies.delete("token") //clears the token if the token isn't verified correctly or expired
+        return NextResponse.json(
+          { message: "Invalid or expired token!" },
+          { status: 401 }
+        );
+      }
+      const response = NextResponse.next();
+      response.headers.set("userID", decoded.id as string)
 
-        const decoded = await verifyToken(token);           // Verifies the extracted token
-        // console.log(decoded, "Decoded token in middleware");
-        if (!decoded) {
-          // const response = NextResponse.redirect(new URL('/login', req.url))
-          // response.cookies.delete("token") //clears the token if the token isn't verified correctly or expired
-          return NextResponse.json(
-            { message: "Invalid or expired token!" },
-            { status: 401 }
-          );
-        }
-
-        const response = NextResponse.next();
-        response.headers.set("userID", decoded.id as string)
-
-        return response;
+      return response;
     }
     console.log("all passed")
     return NextResponse.next(); 
@@ -54,5 +52,6 @@ export const config = {
   matcher: [
     "/api/user/:path*", // protect all API routes under /api
     "/dashboard/:path*", // protect dashboard pages
+    "/user/:path*",
   ],
 };

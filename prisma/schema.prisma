@@ -10,8 +10,9 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model User {
@@ -41,5 +42,5 @@ model Bookmark {
   user   User   @relation(fields: [userId], references: [id])
   userId String
 
-  @@unique([userId, url]) // 👈 ensures no duplicate URL per user
+  @@unique([userId, url]) //ensures no duplicate URL per user
 }
