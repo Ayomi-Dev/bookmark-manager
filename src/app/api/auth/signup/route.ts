@@ -1,14 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
-import { PrismaClient } from "@/generated/prisma";
+import { prisma } from "@/lib/prisma"
 import bcrypt from "bcrypt"
 import { signToken } from "@/lib/jwt";
 
-const prisma = new PrismaClient();
-
+export const runtime = "nodejs"
 export const POST = async (req: NextRequest ) => {
     console.log("route hit sign up")
     try {
-        const body = await req.json();
+        const body = await req.json();//recieves incoming form data from the client
         const { email, password, name} = body
 
         if(!email || !name || !password) {
@@ -17,7 +16,7 @@ export const POST = async (req: NextRequest ) => {
                 { status : 400 }
             )
         } 
-        const existingUser = await prisma.user.findUnique({
+        const existingUser = await prisma.user.findUnique({ //checks if user with same email already exists
             where: { email }
         })
         if( existingUser ){
@@ -29,7 +28,7 @@ export const POST = async (req: NextRequest ) => {
 
         const hashedPassword = await bcrypt.hash(password, 10) //encrypts password
 
-        const user = await prisma.user.create({
+        const user = await prisma.user.create({ //creates a new user on successful signup
             data: {
               name,
               email,
@@ -69,7 +68,6 @@ export const POST = async (req: NextRequest ) => {
             path: '/',
             maxAge: 60 * 60
         });
-        console.log(response)
         return response;
     } 
 

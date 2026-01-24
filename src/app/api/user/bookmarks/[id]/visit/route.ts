@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { PrismaClient } from "@/generated/prisma";
-
-const prisma = new PrismaClient()
+import { prisma } from "@/lib/prisma";
 
 export const PATCH = async(req: NextRequest, { params }: {params: {id: string}} ) => {
     try {
