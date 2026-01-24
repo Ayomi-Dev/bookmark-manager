@@ -12,7 +12,6 @@ generator client {
 datasource db {
   provider  = "postgresql"
   url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
 }
 
 model User {
@@ -30,7 +29,7 @@ model User {
 model Bookmark {
   id           Int      @id @default(autoincrement())
   title        String?
-  url          String    @unique
+  url          String    
   icon         String?
   tags         String?
   description  String?

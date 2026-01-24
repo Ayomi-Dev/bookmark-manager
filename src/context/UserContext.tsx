@@ -25,7 +25,7 @@ export const UserContextProvider = ( { children } : { children : ReactNode}) => 
 
     const getUser = async() => {
         try {
-            const response = await fetch("http://localhost:3000/api/user/profile", 
+            const response = await fetch("/api/user/profile", 
                 {
                     method: "GET",
                     headers: {
@@ -60,7 +60,7 @@ export const UserContextProvider = ( { children } : { children : ReactNode}) => 
 
     const logout = async () => {
         try {
-            const res =  await fetch("http://localhost:3000/api/auth/logout", {
+            const res =  await fetch("/api/auth/logout", {
                 method: "POST",
                 credentials: "include"
             });

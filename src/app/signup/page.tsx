@@ -27,7 +27,7 @@ const SignUpPage = () => {
   });
 
   const handleInputChange = (e:ChangeEvent<HTMLInputElement>) => {
-      setUserInfo({...userInfo, [e.target.name]: e.target.value});
+    setUserInfo({...userInfo, [e.target.name]: e.target.value});
   }
 
   const signupUser = async(e: FormEvent) => {
@@ -41,7 +41,7 @@ const SignUpPage = () => {
 
     try {
       
-      const res = await fetch("http://localhost:3000/api/auth/signup", {
+      const res = await fetch("/api/auth/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

@@ -6,23 +6,24 @@ import { signToken } from "@/lib/jwt";
 const prisma = new PrismaClient();
 
 export const POST = async (req: NextRequest ) => {
+    console.log("route hit sign up")
     try {
         const body = await req.json();
         const { email, password, name} = body
 
-        if(!email || !name) {
+        if(!email || !name || !password) {
             return NextResponse.json(
-                {error: "Email and name required!"},
-                { status : 400}
+                {error: "Email, password and name required!"},
+                { status : 400 }
             )
         } 
-
         const existingUser = await prisma.user.findUnique({
             where: { email }
         })
         if( existingUser ){
-           return NextResponse.json(
-                { message: "User with this email already exist"}
+            return NextResponse.json(
+                { message: "User with this email already exist"},
+                { status: 409 }
             )
         }
 
@@ -36,6 +37,7 @@ export const POST = async (req: NextRequest ) => {
             },
             include: { bookmarks: true }
         });
+        
         console.log(user)
 
         if(!process.env.JWT_SECRET){
@@ -67,11 +69,12 @@ export const POST = async (req: NextRequest ) => {
             path: '/',
             maxAge: 60 * 60
         });
+        console.log(response)
         return response;
     } 
 
     catch (error) {
-        NextResponse.json(
+        return NextResponse.json(
             { message: "Something went wrong with the server"},
             { status : 500}
         )
