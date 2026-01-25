@@ -2,13 +2,14 @@
 
 
 import { InputComponent } from '@/components/client/InputComponent'
-import { Box, Button, Flex, HStack } from '@chakra-ui/react'
+import { Box, Button, Flex, HStack, Text } from '@chakra-ui/react'
 import { Lock, Message, MessageNotif, User } from 'iconsax-reactjs'
 import React, { ChangeEvent, FormEvent, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { PageWrapper } from '@/utils/PageWrapper'
 import NotificationModal from '@/utils/NotificationModal'
 import { useUserContext } from '@/context/UserContext'
+import Link from 'next/link'
 
 const SignUpPage = () => {
   const {getUser, user} = useUserContext();
@@ -54,7 +55,6 @@ const SignUpPage = () => {
       }
       else{
         getUser();
-        
         setTimeout(() => {
           setNotification({
             show: true,
@@ -95,7 +95,7 @@ const SignUpPage = () => {
           width={"500px"}
           mx={"auto"}
           bg={"brand.secBg"}
-          h={"500px"}
+          h={"300px"}
           borderRadius={"10px"}
           px={5} 
           pt={3}
@@ -120,7 +120,10 @@ const SignUpPage = () => {
     
             <Flex
               justifyContent={"center"}
-              w={"200px"}
+              w={"100%"}
+              flexDir={"column"}
+              gap={2}
+              alignItems={"center"}
               mx={"auto"}
             >
               <Button 
@@ -129,6 +132,15 @@ const SignUpPage = () => {
               >
                 Sign Up
               </Button>
+              <Text fontSize={"sm"}>
+                Already have an account? 
+                <Link 
+                  href={`/login`} 
+                  color={'blue'}
+                >
+                  Login
+                </Link>
+              </Text>
     
             </Flex>
           </form>

@@ -7,10 +7,8 @@ import { useUserContext } from '@/context/UserContext'
 
 export const AddBookmarkButon = () => {
   const { onOpen } =useBookmarkContext( )
-  const { user } = useUserContext();
  
   return (
-    user &&
     <Button
      onClick={onOpen}
     > 

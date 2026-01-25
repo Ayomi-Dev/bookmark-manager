@@ -80,8 +80,10 @@ export const BookmarkProvider = ({ children }: { children: ReactNode }) => {
        console.log(`${error}: No bookmarks`) 
       }
     }
-    useEffect(() => {//Loads bookmarks once user logs in 
-      getBookmarks();
+    useEffect(() => {//Loads bookmarks once user logs in
+      if(user){
+        getBookmarks();
+      } 
     }, [user]);
 
     useEffect(() => {

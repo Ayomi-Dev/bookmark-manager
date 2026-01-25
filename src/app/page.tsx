@@ -1,4 +1,3 @@
-import ThemeToggleButton from "@/components/client/ThemeToggleButton";
 import { PageWrapper } from "@/utils/PageWrapper";
 import { Box, Button, Text } from "@chakra-ui/react";
 

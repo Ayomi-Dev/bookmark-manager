@@ -1,4 +1,5 @@
 import { extendTheme, ThemeConfig } from "@chakra-ui/react";
+import { big } from "framer-motion/client";
 
 const config: ThemeConfig = {
   initialColorMode: "light",
@@ -44,9 +45,9 @@ const theme = extendTheme({
   Button: {
     variants: {
       brand: (props: any) => ({
-        bg: props.colorMode === "dark" ? "black" : "#00c6ff",
+        bg: props.colorMode === "dark" ? "black" : "brand.bgDark",
         color: "white",
-        _hover: { opacity: 0.9 },
+        _hover: { opacity: 0.9, bg: "gray.700" },
         transition: "background 0.4s ease",
         borderRadius: "md"
       }),

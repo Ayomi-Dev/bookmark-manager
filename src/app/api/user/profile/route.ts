@@ -8,10 +8,10 @@ export const GET = async (  req: NextRequest) => {
         const userId = req.headers.get("userID");
         
         if (!userId) {
-          return NextResponse.json(
-            { error: "Unauthorized request" },
-            { status: 401 }
-          );
+            return NextResponse.json(
+                { error: "Unauthorized", redirectTo: "/login" },
+                { status: 401 }
+            );
         }
         const user = await prisma.user.findUnique({
             where: { id: userId },
@@ -35,7 +35,8 @@ export const GET = async (  req: NextRequest) => {
             { user: foundUser, success: true },
             { status: 200}
         )
-    } catch (error) {
+    } 
+    catch (error) {
         console.log(error)
         return NextResponse.json( { error: "Cannot fetch user at this time"})
     }

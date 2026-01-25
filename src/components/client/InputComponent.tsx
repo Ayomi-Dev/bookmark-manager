@@ -18,11 +18,11 @@ export const InputComponent: React.FC<FloatingInputProps> = ({
   const [hasValue, setHasValue] = useState(false);
 
   // Theme-aware colors
-  const borderColor = useColorModeValue("blue.200", "blue.400");
-  const focusBorderColor = useColorModeValue("blue.300", "brand.accentDark");
+  const borderColor = useColorModeValue("blue.200", "gray.200");
+  const focusBorderColor = useColorModeValue("blue.300", "gray.400");
   const labelColor = useColorModeValue("gray.500", "gray.400");
-  const activeLabelColor = useColorModeValue("blue.400", "brand.accentDark");
-  const textColor = useColorModeValue("brand.textLight", "brand.textDark");
+  const activeLabelColor = useColorModeValue("blue.400", "black");
+  const textColor = useColorModeValue("brand.textLight", "black");
   const bg = useColorModeValue("transparent", "transparent");
 
   return (

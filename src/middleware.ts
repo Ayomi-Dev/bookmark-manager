@@ -30,8 +30,8 @@ export async function middleware(req: NextRequest) {
       const decoded = await verifyToken(token);           // Verifies the extracted token
       // console.log(decoded, "Decoded token in middleware");
       if (!decoded) {
-        // const response = NextResponse.redirect(new URL('/login', req.url))
-        // response.cookies.delete("token") //clears the token if the token isn't verified correctly or expired
+        const response = NextResponse.redirect(new URL('/login', req.url))
+        response.cookies.delete("token") //clears the token if the token isn't verified correctly or expired
         return NextResponse.json(
           { message: "Invalid or expired token!" },
           { status: 401 }

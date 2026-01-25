@@ -3,13 +3,18 @@
 import { useUserContext } from '@/context/UserContext'
 import { Button, MenuItem, Text } from '@chakra-ui/react'
 import { Logout } from 'iconsax-reactjs'
+import { useRouter } from 'next/navigation'
 import React from 'react'
 
 const LogoutButton = () => {
     const { logout, user } = useUserContext()
+    const router = useRouter()
     
     const handleLogout = () => {
       logout()
+      setTimeout(() => {
+        router.push(`/login`)
+      }, 1000);
     }
   return (
     <MenuItem

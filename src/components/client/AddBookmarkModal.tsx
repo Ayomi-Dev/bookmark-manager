@@ -7,13 +7,17 @@ import { useBookmarkContext } from "@/context/BookmarkContext"
 import Select from "react-select"
 import { Tags } from "@/types"
 import NotificationModal from "@/utils/NotificationModal"
+import { useUserContext } from "@/context/UserContext"
+import { useRouter } from "next/navigation"
 
 
 
 
 
 const AddBookmarkModal = () => {
-  const [loading, setLoading] = useState(false)
+  const { user } = useUserContext();
+  const [loading, setLoading] = useState(false);
+  const router = useRouter()
   const tagOptions = Tags.map( tag => ( 
     { 
         value: tag,
@@ -41,6 +45,13 @@ const AddBookmarkModal = () => {
     e.preventDefault();
     setLoading(true);
 
+    if(!user){
+      router.push('/login')
+      onClose()
+      setLoading(false)
+      return;
+    }
+
     try {
       const metadataRes = await fetch("/api/user/bookmarks/metadata", { //fsends the url to the backend api route
         method: "POST",
@@ -51,7 +62,7 @@ const AddBookmarkModal = () => {
       })
       const metadata = await metadataRes.json() //extracts the response so that its data  can be used in the next request
       if(!metadataRes){
-        throw new Error("Cannot fetch metadata at this point, please try again!");
+        throw new Error("Cannot fetch metadata at this time, please try again!");
       }
       const data = await fetch("/api/user/bookmarks", {
         method: "POST",
@@ -103,7 +114,7 @@ const AddBookmarkModal = () => {
         <form onSubmit={handleAddBookmark}>
           <ModalCloseButton bg="#F6F6FA" borderRadius="50%" />
           <ModalBody py={5}>
-            <InputComponent name="url" type="text" label="Web URL" value={url} onChange={handleChange} />
+            <InputComponent name="url" required type="text" label="Web URL" value={url} onChange={handleChange} />
 
             {/* Multi-select input */}
             <Box mt={4}>

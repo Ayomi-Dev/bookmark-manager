@@ -65,7 +65,7 @@ const LoginPage = () => {
       
       setTimeout(() => {
         router.push('/user/profile')
-      }, 5000)
+      }, 3000)
     } 
     catch (error) {
       console.log(error);
@@ -84,7 +84,10 @@ const LoginPage = () => {
         width={"500px"}
         mx={"auto"}
         bg={"brand.secBg"}
-        h={"500px"}
+        h={"300px"}
+        display={"flex"}
+        justifyContent={"center"}
+        alignItems={"center"}
         borderRadius={"10px"}
         px={5}
         pt={3}
@@ -98,7 +101,7 @@ const LoginPage = () => {
           </HStack>
 
           <HStack>
-            <Lock variant='Linear' size={15} />
+            <Lock variant='Linear' size={15} color='black' />
             <InputComponent type="password" name='password' label='Password' onChange={handleInputChange} />
           </HStack>
 

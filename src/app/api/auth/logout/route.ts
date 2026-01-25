@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 
 export const POST = async () => {
   try {
-    console.log("logout hit")
     // Overwrites the token cookie with empty value + immediate expiry
     const response = NextResponse.json({ success: true, message: "Logged out" });
 

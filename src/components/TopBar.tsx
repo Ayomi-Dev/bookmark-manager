@@ -55,7 +55,6 @@ const TopBar = () => {
         <AddBookmarkButon />
         <UserMenu />
         <ThemeToggleButton />
-        <LoginButton />
       </Box>
     </Flex>
   )

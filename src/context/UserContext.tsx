@@ -48,12 +48,6 @@ export const UserContextProvider = ( { children } : { children : ReactNode}) => 
         }
     }
 
-    useEffect(() => {
-        getUser()
-    }, [])
-
- 
-
     const login = (newUser: User) => {
         setUser( newUser )
     }
