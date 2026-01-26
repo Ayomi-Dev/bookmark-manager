@@ -8,23 +8,25 @@ import { useBookmarkContext } from '@/context/BookmarkContext'
 import { useUserContext } from '@/context/UserContext'
 
 const SideBar = () => {
-  const { archivedBookmarks } = useBookmarkContext();
-  const { user } = useUserContext()
+  const { archivedBookmarks, openSideBar } = useBookmarkContext();
+  const { user } = useUserContext();
   return (
-    <>
-      {
+    
         user && (
           <Box 
-            h={"100vh"} 
-            w={"20%"}
+            h={"calc(100vh - 74px)"} 
+            w={"50%"}
             bg={"brand.secBg"}
             _dark={{bg: "brand.bgDark"}}
             overflow={"auto"}
             borderRight="1px"
             borderColor="gray.200"
-            p={4}
-            position={"sticky"}
-            top={0}
+            p={4} 
+            position={"fixed"}
+            top={"74px"}
+            left={0}
+            display={openSideBar? "block" : "none"}
+            zIndex={100}
           >
             
             <VStack align="stretch" spacing={3}>
@@ -55,8 +57,7 @@ const SideBar = () => {
           </Box>
 
         )
-      }
-    </>
+     
   )
 }
 

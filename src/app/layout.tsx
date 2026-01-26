@@ -3,7 +3,7 @@ import "./globals.css";
 import Providers from "@/components/ui/provider";
 import SideBar from "@/components/SideBar";
 import TopBar from "@/components/TopBar";
-import { Box } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import AddBookmarkModal from "@/components/client/AddBookmarkModal";
 import { BookmarkProvider } from "@/context/BookmarkContext";
 import { UserContextProvider } from "@/context/UserContext";
@@ -36,15 +36,15 @@ export default function RootLayout({
 
             <Providers>
               <TopBar />
-              <Box
-                display={"flex"}
+              <Flex
                 position={"relative"}
-                mt={"70px"}
+                h={"100vh"}
+                w={"full"}
               >
+                
                 <SideBar />
                 {children}
-
-              </Box>
+              </Flex>
               <AddBookmarkModal />
             </Providers>
             

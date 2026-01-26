@@ -3,8 +3,9 @@ import { InputComponent } from '@/components/client/InputComponent'
 import { useUserContext } from '@/context/UserContext'
 import NotificationModal from '@/utils/NotificationModal'
 import { PageWrapper } from '@/utils/PageWrapper'
-import { Box, Button, Flex, HStack } from '@chakra-ui/react'
+import { Box, Button, Flex, HStack, Text } from '@chakra-ui/react'
 import { Lock,  MessageNotif } from 'iconsax-reactjs'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import React, { ChangeEvent, FormEvent, useState } from 'react'
 
@@ -93,7 +94,7 @@ const LoginPage = () => {
         pt={3}
         mt={3}
       >
-        <form onSubmit={loginUser} > 
+        <form onSubmit={loginUser}> 
           <HStack
           >
             <MessageNotif size={15} variant='Linear' />
@@ -107,7 +108,10 @@ const LoginPage = () => {
 
           <Flex
             justifyContent={"center"}
-            w={"200px"}
+            w={"full"}
+            direction={"column"}
+            alignItems={"center"}
+            gap={2}
             mx={"auto"}
           >
             <Button 
@@ -116,7 +120,15 @@ const LoginPage = () => {
             >
               Login
             </Button>
-
+            <Text fontSize={"sm"}>
+              Don't have an account?  
+              <Link 
+                href={"/signup"}
+                color={"blue.300"}
+              >
+                Sign Up
+              </Link>
+            </Text>
           </Flex>
         </form> 
 

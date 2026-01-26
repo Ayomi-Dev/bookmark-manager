@@ -49,6 +49,10 @@ interface BookmarkContextType {
   //archive control
   toggleArchive: (id: number) => Promise<void>
   archivedBookmarks: Bookmark[];
+
+  //toggle side bar for bookmarkk tags
+  openSideBar: boolean;
+  toggleSideBar: () => void
 }
 
 const BookmarkContext = createContext<BookmarkContextType | undefined>(undefined);
@@ -61,6 +65,12 @@ export const BookmarkProvider = ({ children }: { children: ReactNode }) => {
     const [filterTags, setFilterTags] = useState<string[]>([]);
     const [filteredBookmarks, setFilteredBookmarks] = useState<Bookmark[]>([]);
     const [archivedBookmarks, setArchivedBookmarks] = useState<Bookmark[]>([])
+    const [openSideBar, setOpenSideBar] = useState<boolean>(false);
+
+
+    const toggleSideBar = () => {
+      setOpenSideBar(!openSideBar)
+    }
 
 
     const getBookmarks = async () => {
@@ -196,7 +206,10 @@ export const BookmarkProvider = ({ children }: { children: ReactNode }) => {
       deleteBookmark,
 
       toggleArchive,
-      archivedBookmarks
+      archivedBookmarks,
+
+      openSideBar,
+      toggleSideBar
     };
 
   return (

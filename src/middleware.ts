@@ -20,7 +20,6 @@ export async function middleware(req: NextRequest) {
 
     if(isProtected){
       const token = req.cookies.get("token")?.value;  // Extracts token from cookies
-      // console.log("middleware hit)", token)
       if (!token) {
         return NextResponse.json(
           { message: "Authentication required!" },
@@ -28,7 +27,6 @@ export async function middleware(req: NextRequest) {
         );
       }
       const decoded = await verifyToken(token);           // Verifies the extracted token
-      // console.log(decoded, "Decoded token in middleware");
       if (!decoded) {
         const response = NextResponse.redirect(new URL('/login', req.url))
         response.cookies.delete("token") //clears the token if the token isn't verified correctly or expired
@@ -42,7 +40,6 @@ export async function middleware(req: NextRequest) {
 
       return response;
     }
-    console.log("all passed")
     return NextResponse.next(); 
   } 
 
