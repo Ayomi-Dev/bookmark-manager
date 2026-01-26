@@ -15,7 +15,7 @@ const SideBar = () => {
         user && (
           <Box 
             h={"calc(100vh - 74px)"} 
-            w={"50%"}
+            w={["50%", "20%"]}
             bg={"brand.secBg"}
             _dark={{bg: "brand.bgDark"}}
             overflow={"auto"}
@@ -25,7 +25,9 @@ const SideBar = () => {
             position={"fixed"}
             top={"74px"}
             left={0}
-            display={openSideBar? "block" : "none"}
+            display={
+              {base : openSideBar? "block" : "none", md: "block"}
+            }
             zIndex={100}
           >
             

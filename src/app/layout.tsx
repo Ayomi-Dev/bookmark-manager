@@ -43,7 +43,12 @@ export default function RootLayout({
               >
                 
                 <SideBar />
-                {children}
+                <Box
+                  ml={["0%", "0%", "20%"]}
+                  flex={1}
+                >
+                  {children}
+                </Box>
               </Flex>
               <AddBookmarkModal />
             </Providers>
