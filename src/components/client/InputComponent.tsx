@@ -5,7 +5,6 @@ interface FloatingInputProps {
   name: string;
   type?: string;
   label: string;
-  [key: string]: any;
 }
 
 export const InputComponent: React.FC<FloatingInputProps> = ({

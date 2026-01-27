@@ -7,14 +7,11 @@ import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AddBookmarkButon } from '@/components/client/AddBookmarkButon';
 import { SortMenu } from '@/components/client/SortMenu';
-import { useUserContext } from '@/context/UserContext';
-import { useRouter } from 'next/navigation';
+
 
 const MotionGridItem = motion.create(Box) //wrapsbookmark card in an animation box
 
 const ProfilePage = () => {
-  const { user } = useUserContext()
-  const router = useRouter()
   const { bookmarks, filteredBookmarks } = useBookmarkContext();
   const [bookmarksToDisplay, setBookmarksToDisplay ]= useState(bookmarks)
 
@@ -22,10 +19,6 @@ const ProfilePage = () => {
     setBookmarksToDisplay(filteredBookmarks?.length > 0 ? filteredBookmarks : bookmarks)
   }, [filteredBookmarks, bookmarks])
 
-  // if(!user){
-  //   router.push('/login');
-  //   return
-  // }
 
   return (
     <PageWrapper>

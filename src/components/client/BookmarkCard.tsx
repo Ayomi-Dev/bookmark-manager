@@ -1,13 +1,11 @@
 "use client";
 import { Bookmark, useBookmarkContext } from '@/context/BookmarkContext';
-import { Badge, Box, Divider, Flex, GridItem, Heading, HStack, Text } from '@chakra-ui/react';
-import { Calendar, Eye, Home, Sticker, Timer1 } from 'iconsax-reactjs';
-import { Pushpin } from './Pushpin';
+import { Badge, Box, Divider, Flex, Heading, HStack, Text } from '@chakra-ui/react';
+import { Calendar, Eye, Sticker, Timer1 } from 'iconsax-reactjs';
 import Image from 'next/image';
 import { BookmarkMenu } from './BookmarMenu';
 import { formatLastVisited } from '@/utils/LastVisitedFormat';
-import { useState } from 'react';
-import { HoverPreview } from '../ui/HoverPreview';
+// import { useState } from 'react';
 
 interface BookmarkProp {
     bookmark: Bookmark
@@ -24,7 +22,7 @@ const BookmarkCard = ( { bookmark } : BookmarkProp) => {
     const dayLastVisited = dateVisited.getDate();
     const bookmarkTags = typeof bookmark.tags === "string" ? JSON.parse(bookmark.tags) : bookmark.tags; //parses tags if they are in string format
 
-    const [isHovering, setIsHovering ] = useState(false)
+    // const [isHovering, setIsHovering ] = useState(false)
     const handleVisit = () => {
         bookmarkVisits(bookmark.id)
 
@@ -47,8 +45,8 @@ const BookmarkCard = ( { bookmark } : BookmarkProp) => {
             flexDir={"column"}
             justifyContent={"space-between"}
             boxShadow={"sm"}
-            onMouseLeave={() => setIsHovering(false)}
-            onMouseEnter={() => setIsHovering(true)}
+            // onMouseLeave={() => setIsHovering(false)}
+            // onMouseEnter={() => setIsHovering(true)}
         >
            {/* <HoverPreview isHovering={ isHovering } handleVisit={ handleVisit } bookmark={ bookmark } /> */}
             <Box>

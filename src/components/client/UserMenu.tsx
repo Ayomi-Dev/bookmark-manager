@@ -1,7 +1,7 @@
 "use client"
 
-import { IconButton, Menu, MenuButton, MenuItem, MenuList, Text } from "@chakra-ui/react"
-import { Logout, User, UserCirlceAdd } from "iconsax-reactjs"
+import { Menu, MenuButton, MenuItem, MenuList, Text } from "@chakra-ui/react"
+import { User, UserCirlceAdd } from "iconsax-reactjs"
 import LogoutButton from "./LogoutButton"
 import { useUserContext } from "@/context/UserContext"
 

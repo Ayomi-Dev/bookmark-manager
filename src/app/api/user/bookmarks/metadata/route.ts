@@ -7,6 +7,7 @@ import metascraperLogo from "metascraper-logo";
 import metascraperUrl from "metascraper-url";
 import metascraperAuthor from "metascraper-author";
 import metascraperPublisher from "metascraper-publisher";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
 const scraper = metascraper([
   metascraperTitle(),
@@ -54,18 +55,27 @@ export async function POST(req: Request) {
 
         // Break out if the loop is successful
         break;
-      } catch (error: any) {
-        attempt++;
-        console.error(`Attempt ${attempt} failed: ${error.message}`);
-
-        // If max attempts or retries has not been reached yet, wait before retrying
-        if (attempt < MAX_ATTEMPTS) {
-          await new Promise(resolve => setTimeout(resolve, RETRY_DELAY));
+      } catch (error: unknown) {
+        if (
+          error instanceof PrismaClientKnownRequestError && //type-gaurd error to prevent build any-error
+          error.code === "P2002"
+        ) {
+          return NextResponse.json(
+            { error: "You already saved this bookmark" },
+            { status: 400 }
+          );
         }
+      
+        return NextResponse.json(
+          { error: "Internal server error" },
+          { status: 500 }
+        );
       }
+      
+      
     }
 
-    // If metadata is still null after retries, return an error
+    // If metadata is still null after retries, returns an error
     if (!metadata) {
       return NextResponse.json(
         { error: "Failed to fetch metadata after multiple attempts" },

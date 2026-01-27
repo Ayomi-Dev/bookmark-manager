@@ -132,7 +132,7 @@ export const BookmarkProvider = ({ children }: { children: ReactNode }) => {
     //bookmark visit control
     const bookmarkVisits = async(id: number) => {
       try {
-        const res = await fetch(`/api/user/bookmarks/${id}/visit`, {
+        await fetch(`/api/user/bookmarks/${id}/visit`, {
           method: "PATCH"
         })
         getBookmarks();

@@ -1,5 +1,4 @@
-import { useUserContext } from '@/context/UserContext'
-import { Button, MenuItem, Text } from '@chakra-ui/react'
+import { MenuItem, Text } from '@chakra-ui/react'
 import { Trash } from 'iconsax-reactjs'
 import React, { FC } from 'react'
 

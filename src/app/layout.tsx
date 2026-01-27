@@ -3,7 +3,7 @@ import "./globals.css";
 import Providers from "@/components/ui/provider";
 import SideBar from "@/components/SideBar";
 import TopBar from "@/components/TopBar";
-import { Box, Flex } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import AddBookmarkModal from "@/components/client/AddBookmarkModal";
 import { BookmarkProvider } from "@/context/BookmarkContext";
 import { UserContextProvider } from "@/context/UserContext";

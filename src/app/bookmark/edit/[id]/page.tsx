@@ -2,7 +2,7 @@
 
 import { Box, Button,  Tag, TagCloseButton, TagLabel, Text, Wrap, WrapItem } from "@chakra-ui/react"
 import { ChangeEvent, FormEvent, useEffect, useState } from "react"
-import { Bookmark, useBookmarkContext } from "@/context/BookmarkContext"
+import { useBookmarkContext } from "@/context/BookmarkContext"
 import Select from "react-select"
 import { Tags } from "@/types"
 import { useParams, useRouter } from "next/navigation"
@@ -63,7 +63,7 @@ const EditBookmark= () => {
             }
         }
         getCurrentBookmark()
-    }, [])
+    })
 
     
     const tagOptions = Tags.map( tag => ( //transforms tags into object

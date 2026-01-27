@@ -3,7 +3,7 @@
 
 import { InputComponent } from '@/components/client/InputComponent'
 import { Box, Button, Flex, HStack, Text } from '@chakra-ui/react'
-import { Lock, Message, MessageNotif, User } from 'iconsax-reactjs'
+import { Lock, Message, User } from 'iconsax-reactjs'
 import React, { ChangeEvent, FormEvent, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { PageWrapper } from '@/utils/PageWrapper'

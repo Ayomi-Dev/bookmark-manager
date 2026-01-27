@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { Box, Text } from '@chakra-ui/react';
 import { Bookmark } from '@/context/BookmarkContext';
 import { FC } from 'react';
+import Image from 'next/image';
 
 const MotionBox = motion.create(Box); //motion effects for hover preview
 type PreviewProp = {
@@ -44,7 +45,8 @@ export const HoverPreview: FC<PreviewProp> = ({ bookmark, handleVisit, isHoverin
             </Text>
             {bookmark.icon && (
                 <Box mt={2}>
-                  <img
+                  <Image
+                    alt={bookmark.title}
                     src={bookmark.icon}
                     style={{
                       width: "100%",

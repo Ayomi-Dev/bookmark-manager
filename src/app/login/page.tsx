@@ -121,7 +121,7 @@ const LoginPage = () => {
               Login
             </Button>
             <Text fontSize={"sm"}>
-              Don't have an account?  
+              Do not have an account?  
               <Link 
                 href={"/signup"}
                 color={"blue.300"}

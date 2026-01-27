@@ -1,13 +1,13 @@
 "use client"
 
 import { useUserContext } from '@/context/UserContext'
-import { Button, MenuItem, Text } from '@chakra-ui/react'
+import {  MenuItem, Text } from '@chakra-ui/react'
 import { Logout } from 'iconsax-reactjs'
 import { useRouter } from 'next/navigation'
 import React from 'react'
 
 const LogoutButton = () => {
-    const { logout, user } = useUserContext()
+    const { logout } = useUserContext()
     const router = useRouter()
     
     const handleLogout = () => {

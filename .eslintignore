@@ -1,0 +1,6 @@
+# Prisma generated client
+src/generated/**
+node_modules
+.next
+**/*.generated.*
+**/generated/**

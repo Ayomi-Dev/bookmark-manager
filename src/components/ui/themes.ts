@@ -1,5 +1,5 @@
 import { extendTheme, ThemeConfig } from "@chakra-ui/react";
-import { big } from "framer-motion/client";
+import { StyleFunctionProps } from "@chakra-ui/react";
 
 const config: ThemeConfig = {
   initialColorMode: "light",
@@ -26,7 +26,7 @@ const theme = extendTheme({
     body: `'Poppins', sans-serif`,
   },
   styles: {
-    global: (props: any) => ({
+    global: (props: StyleFunctionProps) => ({
 
       "html, body": {
         bg:
@@ -44,7 +44,7 @@ const theme = extendTheme({
   components: {
   Button: {
     variants: {
-      brand: (props: any) => ({
+      brand: (props: StyleFunctionProps) => ({
         bg: props.colorMode === "dark" ? "black" : "brand.bgDark",
         color: "white",
         _hover: { opacity: 0.9, bg: "gray.700" },

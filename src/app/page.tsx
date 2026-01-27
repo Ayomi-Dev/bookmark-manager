@@ -1,5 +1,5 @@
 import { PageWrapper } from "@/utils/PageWrapper";
-import { Box, Button, Text } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 
 export default function HomePage() {
   return (
