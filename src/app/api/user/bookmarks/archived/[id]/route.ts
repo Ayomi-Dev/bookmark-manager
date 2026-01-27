@@ -1,14 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
-export const PATCH = async(req: NextRequest, { params }: { params: { id: string }}) => {
+export const PATCH = async(req: NextRequest, context: { params: Promise<{ id: string }>}) => {
     try {
-        const bookmarkId = await params;
-        const id = Number(bookmarkId.id);
+        const {id} = await context.params;
+        const bookmarkID = Number(id);
 
         const bookmark = await prisma.bookmark.findUnique(
             {
-                where: { id }
+                where: { id: bookmarkID }
             }
         )
         if(!bookmark){
@@ -20,7 +20,7 @@ export const PATCH = async(req: NextRequest, { params }: { params: { id: string 
 
         const archivedBookmark = await prisma.bookmark.update(
             {
-                where: {id},
+                where: {id: bookmarkID},
                 data: { isArchived: !bookmark.isArchived} //toggles the archive status
             }
         )

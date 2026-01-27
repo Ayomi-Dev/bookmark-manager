@@ -15,12 +15,12 @@ const SECRET = process.env.JWT_SECRET as string;
 
 
 export const signToken = (payload: object) => {
-  // Sign token using jose (but Edge-friendly)
   const encoder = new TextEncoder();
   const secret = encoder.encode(SECRET);
   return jwt.sign(payload, SECRET, { expiresIn: "1hr" });
 };
 
+// Verify token using jose (but Edge-friendly)
 export const verifyToken = async (token: string) => {
   try {
     const encoder = new TextEncoder();

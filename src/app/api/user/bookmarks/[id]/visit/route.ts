@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
-export const PATCH = async(req: NextRequest, { params }: {params: {id: string}} ) => {
+export const PATCH = async(req: NextRequest, context: {params: Promise<{id: string}>} ) => {
     try {
         const userId = req.headers.get("userId")
     
@@ -11,12 +11,12 @@ export const PATCH = async(req: NextRequest, { params }: {params: {id: string}} 
                 { status: 401 }
             )
         }
-        const bookmarkId = await params
-        const id = Number(bookmarkId.id)
+        const {id}= await context.params
+        const bookmarkID = Number(id)
         
         const bookmark = await prisma.bookmark.update( //updates the selected bookmark 
             {
-                where: { id },
+                where: { id: bookmarkID },
                 data: {
                     timesVisited: { increment: 1}, //increases this property by 1 everytimes the API is callled
                     lastVisited: new Date()

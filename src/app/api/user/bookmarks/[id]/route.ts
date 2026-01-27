@@ -2,10 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
 
-export const GET = async(req: NextRequest, { params}: { params: { id: string}}) => {
+export const GET = async(req: NextRequest, 
+    context: { params: Promise<{ id: string }> }
+) => {
     try {
-        const bookmarkId= await params
-        const id  = Number(bookmarkId.id)
         const userId = req.headers.get("userId");
         if(!userId){
             return NextResponse.json(
@@ -13,10 +13,12 @@ export const GET = async(req: NextRequest, { params}: { params: { id: string}}) 
                 { status: 401}
             )
         }
-
+        
+        const { id }  = await context.params
+        const bookmarkID = Number(id)
         const bookmark = await prisma.bookmark.findUnique(
             {
-                where: { id }
+                where: { id: bookmarkID }
             }
         )
         if(!bookmark){
@@ -42,10 +44,11 @@ export const GET = async(req: NextRequest, { params}: { params: { id: string}}) 
 }
 
 
-export const PUT = async (req: NextRequest, { params}: {params: {id: string}}) => {
+export const PUT = async (req: NextRequest, 
+    context: {params: Promise<{id: string}>}
+) => {
     try {
         const userId = req.headers.get("userId");
-
         if(!userId){
             return NextResponse.json(
                 { error: "Unauthorized operation!: No user logged in"},
@@ -53,14 +56,14 @@ export const PUT = async (req: NextRequest, { params}: {params: {id: string}}) =
             )
         }
 
-        const bookmarkId = await params;
-        const id = Number(bookmarkId.id);
+        const { id }= await context.params;
+        const bookmarkID = Number(id)
         const body = await req.json();
         const { title, url, description, tags } = body;
 
         const bookmark = await prisma.bookmark.update( //finds matched bookmark and updates
         {
-            where: { id },
+            where: { id: bookmarkID },
             data: {
                 url,
                 title,
@@ -84,21 +87,23 @@ export const PUT = async (req: NextRequest, { params}: {params: {id: string}}) =
 }
 
 
-export const DELETE = async (req: NextRequest, { params}: { params: { id: string}}) => {
+export const DELETE = async (req: NextRequest, 
+    context:{ params: Promise<{ id: string}>}
+) => {
     try {
-        const bookmarkId= await params
-        const id  = Number(bookmarkId.id)
         const userId = req.headers.get("userId")
-       if(!userId){
+        if(!userId){
             return NextResponse.json(
                 { error: "Unauthorized request: No user found" },
                 { status: 401}
             )
-       }
-
-       const bookmark = await prisma.bookmark.findUnique( //queries the db and fetches the bookmark that matches the id
+        }
+        
+        const {id}  = await context.params
+        const bookmarkID = Number(id)
+        const bookmark = await prisma.bookmark.findUnique( //queries the db and fetches the bookmark that matches the id
             {
-                where: { id }
+                where: { id: bookmarkID }
             }
        )
        if(!bookmark){
@@ -117,7 +122,7 @@ export const DELETE = async (req: NextRequest, { params}: { params: { id: string
 
        await prisma.bookmark.delete(
         {
-            where: { id }
+            where: { id: bookmarkID }
         })
        
        return NextResponse.json(

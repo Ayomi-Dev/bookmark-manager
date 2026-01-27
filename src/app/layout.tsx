@@ -41,14 +41,8 @@ export default function RootLayout({
                 h={"100vh"}
                 w={"full"}
               >
-                
                 <SideBar />
-                <Box
-                  ml={["0%", "0%", "20%"]}
-                  flex={1}
-                >
-                  {children}
-                </Box>
+                {children}
               </Flex>
               <AddBookmarkModal />
             </Providers>

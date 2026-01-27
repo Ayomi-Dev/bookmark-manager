@@ -2,10 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { verifyToken } from "@/lib/jwt";
 
 
-interface UserPayload {
-    id: string;
-    isAdmin: boolean;
-}
 
 // Routes that require authentication
 const protectedRoutes = ["/api/user/profile", "/api/user/bookmarks", "/api/bookmarks/archived", "/dashboard"];
