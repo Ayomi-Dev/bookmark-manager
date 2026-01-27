@@ -20,7 +20,7 @@ const scraper = metascraper([
 ]);
 
 const MAX_ATTEMPTS = 3;  // Maximum retry attempts
-const RETRY_DELAY = 2000; // Delay between retries (in ms)
+// const RETRY_DELAY = 2000; // Delay between retries (in ms)
 
 export async function POST(req: Request) {
   try {
@@ -33,7 +33,7 @@ export async function POST(req: Request) {
       );
     }
 
-    let attempt = 0;
+    const attempt = 0;
     let metadata = null;
 
     // Retry mechanism
@@ -51,7 +51,6 @@ export async function POST(req: Request) {
 
         const html = await response.text();
         metadata = await scraper({ html, url });
-        console.log(metadata)
 
         // Break out if the loop is successful
         break;
