@@ -5,7 +5,6 @@ import { signToken } from "@/lib/jwt";
 
 export const runtime = "nodejs"
 export const POST = async (req: NextRequest ) => {
-    console.log("route hit sign up")
     try {
         const body = await req.json();//recieves incoming form data from the client
         const { email, password, name} = body
@@ -37,7 +36,6 @@ export const POST = async (req: NextRequest ) => {
             include: { bookmarks: true }
         });
         
-        console.log(user)
 
         if(!process.env.JWT_SECRET){
             return NextResponse.json(
@@ -72,6 +70,7 @@ export const POST = async (req: NextRequest ) => {
     } 
 
     catch (error) {
+        console.log(error)
         return NextResponse.json(
             { message: "Something went wrong with the server"},
             { status : 500}

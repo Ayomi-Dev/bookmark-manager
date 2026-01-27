@@ -1,4 +1,5 @@
 import { NextResponse, NextRequest } from "next/server";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { prisma } from "@/lib/prisma";
 
 export const POST = async(req: NextRequest) => {
@@ -40,20 +41,24 @@ export const POST = async(req: NextRequest) => {
             { status: 201 }
         )
     } 
-    catch (error: any) {// Handles unique constraint violation
-        if (error.code === "P2002") {
-          return NextResponse.json(
-            { error: "You already saved this bookmark" },
-            { status: 400 }
-          );
-        }
 
-        console.error("Error creating bookmark:", error);
-        return NextResponse.json(
-            { error: "Failed to create bookmark" },
-            { status: 500 }
-        );
-    }
+catch (error: unknown) {
+  if (
+    error instanceof PrismaClientKnownRequestError &&
+    error.code === "P2002"
+  ) {
+    return NextResponse.json(
+      { error: "You already saved this bookmark" },
+      { status: 400 }
+    );
+  }
+
+  return NextResponse.json(
+    { error: "Internal server error" },
+    { status: 500 }
+  );
+}
+
 }
 
 export const GET = async(req: NextRequest) => {

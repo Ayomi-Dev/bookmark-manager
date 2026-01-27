@@ -17,7 +17,7 @@ import NotificationModal from "@/utils/NotificationModal"
 const EditBookmark= () => {
     const { id } = useParams()
     const { getBookmarks } = useBookmarkContext();
-    const [ newTags, setNewTags ] = useState<string[]>() //grabs the current tags of the selected bookmark
+    const [ currentTags, setCurrentTags ] = useState<string[]>() //grabs the current tags of the selected bookmark
     const router = useRouter();
     const [loading, setLoading ] = useState(false)
     const [bookmarkInfo, setBoomarkInfo] = useState({
@@ -51,7 +51,7 @@ const EditBookmark= () => {
                     throw new Error("Cannot get bookmark at this time")
                 }
                 else{
-                    setNewTags(JSON.parse(data.bookmark.tags))
+                    setCurrentTags(JSON.parse(data.bookmark.tags))
                     setBoomarkInfo({
                         title: data.bookmark.title,
                         description: data.bookmark.description
@@ -79,7 +79,7 @@ const EditBookmark= () => {
     }
 
     const removeTagFromSelected = (tag: string) => {
-        setNewTags(prevTags => prevTags?.filter(t => t !== tag))
+        setCurrentTags(prevTags => prevTags?.filter(t => t !== tag))
     }
 
     const handleEditBookmark = async(e: FormEvent) => {
@@ -91,7 +91,7 @@ const EditBookmark= () => {
             headers: {
               "Content-Type": "application/json"
             },
-            body: JSON.stringify({...bookmarkInfo, tags: JSON.stringify(newTags) })
+            body: JSON.stringify({...bookmarkInfo, tags: JSON.stringify(currentTags) })
           })
           if(!res.ok){
             setLoading(false)
@@ -152,8 +152,8 @@ const EditBookmark= () => {
                     isMulti
                     name="tags"
                     options={tagOptions}
-                    value={tagOptions.filter(option => newTags?.includes(option.value))}  //prevents duplicating tags
-                    onChange={(newValue) => setNewTags(newValue.map(option => option.value))}
+                    value={tagOptions.filter(option => currentTags?.includes(option.value))}  //prevents duplicating tags
+                    onChange={(newValue) => setCurrentTags(newValue.map(option => option.value))}
                     placeholder="Select tags..."
                     classNamePrefix="react-select"
                     styles={{
@@ -179,13 +179,13 @@ const EditBookmark= () => {
                 </Box>
 
                 {/* Live preview of selected tags with remove button */}
-                {newTags && newTags?.length > 0 && (
+                {currentTags && currentTags?.length > 0 && (
                 <Box mt={3} py={2}>
                     <Text fontSize="sm" color="gray.500" mb={2}>
                     Selected tags:
                     </Text>
                     <Wrap>
-                    {newTags?.map((tag) => (
+                    {currentTags?.map((tag) => (
                         <WrapItem key={tag}>
                         <Tag
                             size="md"
