@@ -71,7 +71,7 @@ const BookmarkCard = ( { bookmark } : BookmarkProp) => {
                     position="relative"
                     >
                     <Image
-                        src={bookmark?.icon}
+                        src={bookmark.icon ? bookmark.icon : "/assets/de.png"}
                         alt="url-img"
                         fill
                         sizes='100%'

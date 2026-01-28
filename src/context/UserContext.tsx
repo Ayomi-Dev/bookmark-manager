@@ -22,6 +22,7 @@ const UserContext = createContext<UserContextType | undefined>(undefined)
 
 export const UserContextProvider = ( { children } : { children : ReactNode}) => {
     const [user, setUser] = useState<User | null>(null);
+    const [mounted, setMounted] = useState(false); //manage and prevent hydration errors so server and client render the same content
 
     const getUser = async() => {
         try {
@@ -34,22 +35,27 @@ export const UserContextProvider = ( { children } : { children : ReactNode}) => 
                     credentials: "include"
                 }
             );
+            if(response.status === 401){
+                setUser(null);
+                return
+            }
 
-            const data = await response.json()
             if(!response.ok){
                 throw new Error("Session expired!")
             }
-            else{
-                setUser(data.user)
-            }
+          
+            const data = await response.json()
+            setUser(data.user)
 
         } catch (error) {
             console.log( error )
+            setUser( null )
         }
     }
 
     useEffect(() => {
-        getUser()
+        setMounted( true);
+        getUser();
     }, [])
 
     const login = (newUser: User) => {
@@ -75,6 +81,9 @@ export const UserContextProvider = ( { children } : { children : ReactNode}) => 
         }
     }
 
+    if(!mounted){
+        return null;
+    }
 
     const values = { user, logout, login, getUser }
     return (

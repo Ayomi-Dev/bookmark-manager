@@ -79,10 +79,10 @@ export const BookmarkProvider = ({ children }: { children: ReactNode }) => {
           method: "GET",
         })
 
-        const data = await res.json();
         if(!res.ok){
           throw new Error("Couldn't fetch bookmarks at this time");
         }
+        const data = await res.json();
         setBookmarks(data.bookmarks.filter((bookmark: Bookmark) => !bookmark.isArchived));
         setArchivedBookmarks(data.bookmarks.filter((bookmark: Bookmark) => bookmark.isArchived));
       }
