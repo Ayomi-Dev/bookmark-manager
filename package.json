@@ -28,7 +28,7 @@
     "metascraper-publisher": "^5.49.5",
     "metascraper-title": "^5.49.5",
     "metascraper-url": "^5.49.5",
-    "next": "15.5.5",
+    "next": "15.5.9",
     "prisma": "^6.17.1",
     "react": "19.1.0",
     "react-dom": "19.1.0",
