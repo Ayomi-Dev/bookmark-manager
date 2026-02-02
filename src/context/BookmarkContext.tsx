@@ -53,6 +53,9 @@ interface BookmarkContextType {
   //toggle side bar for bookmarkk tags
   openSideBar: boolean;
   toggleSideBar: () => void
+
+  //seach bookmarks
+  searchBookmarks: (query: string) => void
 }
 
 const BookmarkContext = createContext<BookmarkContextType | undefined>(undefined);
@@ -183,6 +186,15 @@ export const BookmarkProvider = ({ children }: { children: ReactNode }) => {
       
     }
 
+    const searchBookmarks = (query: string) => {
+      const lowercaseQuery = query.toLowerCase() //converts all string to lowercase for uniform search;
+      const searchResults = bookmarks.filter( bookmark => 
+        bookmark.title.toLowerCase().includes(lowercaseQuery)|| //searches all bookmark title
+        bookmark.description?.toLowerCase().includes(lowercaseQuery) //searches all bookmark descriptions
+      );
+      setFilteredBookmarks(searchResults);
+    }
+
 
     const value: BookmarkContextType = {
       isOpen,
@@ -209,7 +221,9 @@ export const BookmarkProvider = ({ children }: { children: ReactNode }) => {
       archivedBookmarks,
 
       openSideBar,
-      toggleSideBar
+      toggleSideBar,
+
+      searchBookmarks
     };
 
   return (

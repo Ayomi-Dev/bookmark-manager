@@ -1,18 +1,26 @@
 "use client"
 
+import { useBookmarkContext } from '@/context/BookmarkContext'
 import { Flex, Input } from '@chakra-ui/react'
 import { SearchNormal } from 'iconsax-reactjs'
-import React from 'react'
+import React, { ChangeEvent, useState } from 'react'
 
 export const SearchBar = () => {
+  const { searchBookmarks } = useBookmarkContext();
+  const [searchQuery, setSearchQuery] = useState<string>("");
+
+  const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value)
+    searchBookmarks(e.target.value)
+  }
   return (
     <Flex
-        w={"200px"}
+        w={{base: "150px", md:"500px"}}
         border={"1px solid #e1e1e2"}
         borderRadius={"10px"}
         alignItems={"center"}
         gap={2}
-        px={2}
+        px={{base: 1, md:2}}
     >
         <SearchNormal variant='Linear' size={15} />
         <Input 
@@ -23,6 +31,8 @@ export const SearchBar = () => {
             variant="unstyled"
             _placeholder={{ fontSize: "14px"}}
             py={1}
+            value={searchQuery}
+            onChange={handleSearch}
          />
     </Flex>
   )

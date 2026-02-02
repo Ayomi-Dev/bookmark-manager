@@ -22,18 +22,17 @@ const TopBar = () => {
       position={"sticky"}
       top={0}
       alignItems={"center"}
-      justifyContent={"space-between"}
-      px={2}
+      justifyContent={{base: "", md: "space-between"}}
+      px={3}
       zIndex={99}
     >
       <Flex
         alignItems={"center"}
         gap={2}
-        px={3}
-        w={"50%"}
+        w={"70%"}
       >
         
-        <HStack w={"40%"}>
+        <Flex  gap={2}> 
           <IconButton aria-label='bookmark'
             icon={<Bookmark size={15} variant='Linear' />}
             size={"sm"}
@@ -49,9 +48,8 @@ const TopBar = () => {
               Bookmark Manager
             </Link>
           </Text>
-        </HStack>
+        </Flex>
 
-        {/* search bar component */}
         <SearchBar />
 
       </Flex>

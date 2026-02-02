@@ -14,6 +14,7 @@ export const AddBookmarkButon = () => {
     user && 
     <Button
      onClick={onOpen}
+     size={{base: "sm", md: "md"}}
     >
       <Text hideBelow={"md"}>Add Bookmark</Text>
       <Box hideFrom={"md"}>
