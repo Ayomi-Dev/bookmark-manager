@@ -105,16 +105,16 @@ const SignUpPage = () => {
     
             <HStack
             >
-              <User size={15} variant='Linear' />
+              <User size={15} variant='Linear' color='black' />
               <InputComponent type="text" name='name' label='Name' onChange={handleInputChange} />
             </HStack>
             <HStack
             >
-              <Message size={15} variant='Linear' />
+              <Message size={15} variant='Linear' color='black' />
               <InputComponent type="email" name='email' label='Email' onChange={handleInputChange} />
             </HStack>
             <HStack>
-              <Lock variant='Linear' size={15} />
+              <Lock variant='Linear' size={15} color='black' />
               <InputComponent type="password" name='password' label='Password' onChange={handleInputChange} />
             </HStack> 
     
@@ -134,12 +134,15 @@ const SignUpPage = () => {
               </Button>
               <Text fontSize={"sm"}>
                 Already have an account? 
-                <Link 
-                  href={`/login`} 
-                  color={'blue'}
+                <Text 
+                  as={Link} 
+                  color={'brand.accentDark'} 
+                  px={3} 
+                  href={"/login"}
+                  fontWeight={"bold"}
                 >
                   Login
-                </Link>
+                </Text>
               </Text>
     
             </Flex>

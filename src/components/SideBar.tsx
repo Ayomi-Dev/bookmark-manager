@@ -35,14 +35,14 @@ const SideBar = () => {
       
       <VStack align="stretch" spacing={3}>
           <Link href={'/user/profile'}>
-                <Text
-                  fontWeight="medium"
-                  _hover={{ bg: "gray.100", color: "black", fontWeight: "bold" }}
-                  p={2}
-                  borderRadius="md"
-                >
-                  Home
-                </Text>
+            <Text
+              fontWeight="medium"
+              _hover={{ bg: "gray.100", color: "black", fontWeight: "bold" }}
+              p={2}
+              borderRadius="md"
+            >
+              Bookmarks
+            </Text>
           </Link>
           <Link href={`/user/archived/bookmarks`}>
             <Text

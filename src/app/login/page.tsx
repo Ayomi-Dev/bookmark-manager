@@ -97,7 +97,7 @@ const LoginPage = () => {
         <form onSubmit={loginUser}> 
           <HStack
           >
-            <MessageNotif size={15} variant='Linear' />
+            <MessageNotif size={15} variant='Linear' color='black' />
             <InputComponent type="email" name='email' label='Email' onChange={handleInputChange} />
           </HStack>
 
@@ -122,12 +122,15 @@ const LoginPage = () => {
             </Button>
             <Text fontSize={"sm"}>
               Do not have an account?  
-              <Link 
-                href={"/signup"}
-                color={"blue.300"}
-              >
-                Sign Up
-              </Link>
+              <Text 
+                  as={Link} 
+                  color={'brand.accentDark'} 
+                  px={3} 
+                  href={"/signup"}
+                  fontWeight={"bold"}
+                >
+                  Sign Up
+                </Text>
             </Text>
           </Flex>
         </form> 

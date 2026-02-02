@@ -12,6 +12,9 @@ export const PageWrapper: FC<{ children: ReactNode }> = ( { children } ) => {
       pos={"relative"}
       ml={{base: 0, md: user ? "20%" : 0}}
       flex={1}
+      display={"flex"}
+      alignItems={"center"}
+      justifyContent={"center"}
     >
         { children }
     </Container>
