@@ -8,6 +8,8 @@ import { UserMenu } from './client/UserMenu';
 import ThemeToggleButton from './client/ThemeToggleButton';
 import { Bookmark } from 'iconsax-reactjs';
 import { useBookmarkContext } from '@/context/BookmarkContext';
+import Link from 'next/link';
+import LoginButton from './client/LoginButton';
 
 const TopBar = () => {
   const { toggleSideBar } = useBookmarkContext()
@@ -43,7 +45,9 @@ const TopBar = () => {
             fontSize={"md"}
             hideBelow={"md"}
           >
-            Bookmark Manager
+            <Link href={`/`}>
+              Bookmark Manager
+            </Link>
           </Text>
         </HStack>
 
@@ -57,6 +61,7 @@ const TopBar = () => {
         alignItems={"center"}
         px={2}
       >
+        <LoginButton />
         <AddBookmarkButon />
         <UserMenu />
         <ThemeToggleButton />
