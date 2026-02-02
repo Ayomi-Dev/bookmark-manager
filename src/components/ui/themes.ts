@@ -16,7 +16,7 @@ const theme = extendTheme({
       accentLight: "#e9d4ff",
      
       
-      bgDark: "linear-gradient(to top, #0f2027 0%, #203a43 50%, #2c5364 100%)",
+      bgDark: "linear-gradient(to left, #0f2027 0%, #203a43 50%, #2c5364 100%)",
       textDark: "#e0e0e0",
       accentDark: "#bb86fc",
     },

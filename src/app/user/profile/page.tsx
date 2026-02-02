@@ -25,14 +25,24 @@ const ProfilePage = () => {
       <Box
         w={"full"}
         h={"100%"}
+        pos={"relative"}
       >
         <Flex
           justifyContent={"space-between"}
           alignItems={"center"}
           py={3}
+          pos={"sticky"}
+          top={70}
+          left={0}
+          zIndex={50}
         >
           <Heading
             fontSize={"16px"}
+            bg={"black"}
+            color={"white"}
+            px={2}
+            py={1}
+            borderRadius={"md"}
           >
             All Bookmarks
           </Heading>

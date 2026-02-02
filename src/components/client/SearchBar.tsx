@@ -15,7 +15,7 @@ export const SearchBar = () => {
   }
   return (
     <Flex
-        w={{base: "150px", md:"500px"}}
+        w={{base: "150px", sm:"500px"}}
         border={"1px solid #e1e1e2"}
         borderRadius={"10px"}
         alignItems={"center"}

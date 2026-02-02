@@ -15,6 +15,7 @@ const TopBar = () => {
   const { toggleSideBar } = useBookmarkContext()
   return (
     <Flex 
+      as={"nav"}
       h={"70px"} 
       w={"100%"}
        bg={"brand.secBg"}
@@ -22,7 +23,7 @@ const TopBar = () => {
       position={"sticky"}
       top={0}
       alignItems={"center"}
-      justifyContent={{base: "", md: "space-between"}}
+      justifyContent={{base: "", sm: "space-between"}}
       px={3}
       zIndex={99}
     >
