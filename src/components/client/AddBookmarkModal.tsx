@@ -114,7 +114,13 @@ const AddBookmarkModal = () => {
         <form onSubmit={handleAddBookmark}>
           <ModalCloseButton bg="#F6F6FA" borderRadius="50%" />
           <ModalBody py={5}>
-            <InputComponent name="url" required type="text" label="Web URL" value={url} onChange={handleChange} />
+            <InputComponent 
+              name="url" 
+              required 
+              type="text" 
+              label="Paste URL here" 
+              value={url} 
+              onChange={handleChange} />
 
             {/* Multi-select input */}
             <Box mt={4}>
