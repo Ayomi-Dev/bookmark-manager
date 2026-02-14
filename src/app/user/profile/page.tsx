@@ -9,7 +9,7 @@ import { AddBookmarkButon } from '@/components/client/AddBookmarkButon';
 import { SortMenu } from '@/components/client/SortMenu';
 
 
-const MotionGridItem = motion.create(Box) //wrapsbookmark card in an animation box
+const MotionGridItem = motion.create(Box) //wraps bookmark card in an animation box
 
 const ProfilePage = () => {
   const { bookmarks, filteredBookmarks } = useBookmarkContext();
@@ -35,6 +35,7 @@ const ProfilePage = () => {
           top={70}
           left={0}
           zIndex={50}
+          bg={"brand"}
         >
           <Heading
             fontSize={"16px"}
