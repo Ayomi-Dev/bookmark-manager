@@ -47,7 +47,7 @@ const theme = extendTheme({
       brand: (props: StyleFunctionProps) => ({
         bg: props.colorMode === "dark" ? "black" : "brand.bgDark",
         color: "white",
-        _hover: { opacity: 0.9, bg: "gray.700" },
+        _hover: { bg: "gray.700" },
         transition: "background 0.4s ease",
         borderRadius: "md"
       }),
@@ -69,10 +69,11 @@ const theme = extendTheme({
         },
       }
     },
+    defaultProps: {
+      variant: "borderless", // all inputs use this
+    },
   },
-  defaultProps: {
-    variant: "borderless", // all inputs use this
-  },
+  
 },
 
 });
